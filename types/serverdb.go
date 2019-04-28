@@ -50,20 +50,9 @@ func (db *ServerDB) Close() error {
 	}
 
 	// Write to file
-	err = ioutil.WriteFile("servers.json", json, 0644)
+	err = ioutil.WriteFile(ServerDBName, json, 0644)
 	if err != nil {
 		return err
 	}
 	return nil
-}
-
-// FindOpenPort searches through the database in order to find a port that is not in use.
-func (db *ServerDB) FindOpenPort() int {
-	port := 25565
-	for _, server := range (*db).Servers {
-		if port == server.Port {
-			port++
-		}
-	}
-	return port
 }

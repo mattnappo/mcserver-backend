@@ -22,16 +22,12 @@ type Server struct {
 }
 
 // NewServer constructs a new server struct.
-func NewServer(version, name string) (*Server, error) {
+func NewServer(version, name string, port int) (*Server, error) {
 	// Determine the path for the server
 	path, err := common.NewServerPath(name)
 	if err != nil {
 		return nil, err
 	}
-
-	// Get a unique server port
-	db, err := LoadDB()
-	port := db.FindOpenPort() // Determine the server port
 
 	// Create the new server
 	newServer := &Server{

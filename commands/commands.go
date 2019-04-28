@@ -4,7 +4,7 @@ import (
 	"github.com/xoreo/mcserver-backend/types"
 )
 
-func downloadServerJar(string url) {
+func downloadServerJar(url string) {
 
 }
 

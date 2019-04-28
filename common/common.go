@@ -37,11 +37,11 @@ func NewServerPath(name string) (string, error) {
 		return "", err
 	}
 
-	// Check that the server does not already exist
-	if _, err := os.Stat(abs); err == nil {
-		return "", ErrServernameAlreadyInUse
-	}
-
+	// // Fix later
+	// // Check that the server does not already exist
+	// if _, err := os.Stat(abs); os.IsNotExist(err) {
+	// 	return "", ErrServernameAlreadyInUse
+	// }
 	return abs, nil
 
 }
