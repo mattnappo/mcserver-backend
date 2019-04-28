@@ -27,3 +27,8 @@ func RestartServer(server *types.Server) {
 func StopServer(server *types.Server) {
 
 }
+
+// EnterServer enters the shell of the server.
+func EnterServer(server *types.Server) {
+
+}
