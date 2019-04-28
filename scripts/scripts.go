@@ -1,13 +1,29 @@
 package scripts
 
+import (
+	"github.com/xoreo/mcserver-backend/types"
+)
+
 func downloadServerJar(string url) {
 
 }
 
-func InitServer(string serverName) {
+// CreateNewServer creates a new server.
+func CreateNewServer(server *types.Server) {
 
 }
 
-func RestartServer(string serverName) {
+// StartServer starts a server.
+func StartServer(server *types.Server) {
+
+}
+
+// RestartServer restarts a server.
+func RestartServer(server *types.Server) {
+
+}
+
+// StopServer stops a server.
+func StopServer(server *types.Server) {
 
 }
