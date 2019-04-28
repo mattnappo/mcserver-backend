@@ -41,6 +41,7 @@ func NewServerPath(name string) (string, error) {
 	if _, err := os.Stat("/path/to/whatever"); err == nil {
 		return abs, nil
 	}
-	return "", ErrServernameAlreadyInUse
+
+	return "", ErrServernameAlreadyInUse // Return
 
 }

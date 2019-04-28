@@ -32,3 +32,14 @@ func LoadDB() (*ServerDB, error) {
 
 	return buffer, nil // Return
 }
+
+// FindOpenPort searches through the database in order to find a port that is not in use.
+func (db *ServerDB) FindOpenPort() int {
+	port := 25565
+	for _, server := range (*db).Servers {
+		if port == server.Port {
+			port++
+		}
+	}
+	return port
+}

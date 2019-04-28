@@ -32,7 +32,7 @@ func NewServer(version, name string) (*Server, error) {
 
 	// Determine the server port
 	var port int
-	// load file that has a []Server
+	port = 9999
 
 	// Create the new server
 	newServer := &Server{
