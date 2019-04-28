@@ -1,0 +1,67 @@
+{
+  "servers": [
+    {
+      "version": "1.7.2",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 1",
+      "port": 25565,
+      "name": "test server 1",
+      "timeCreated": "2019-04-28 17:13:25.855569 -0400 EDT m=+0.000846236"
+    },
+    {
+      "version": "1.2.1",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 2",
+      "port": 25565,
+      "name": "test server 2",
+      "timeCreated": "2019-04-28 17:13:25.855712 -0400 EDT m=+0.000989096"
+    },
+    {
+      "version": "1.8",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 3",
+      "port": 25565,
+      "name": "test server 3",
+      "timeCreated": "2019-04-28 17:13:25.855759 -0400 EDT m=+0.001036000"
+    },
+    {
+      "version": "1.7.2",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 1",
+      "port": 25566,
+      "name": "test server 1",
+      "timeCreated": "2019-04-28 17:14:03.576606 -0400 EDT m=+0.001055490"
+    },
+    {
+      "version": "1.2.1",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 2",
+      "port": 25566,
+      "name": "test server 2",
+      "timeCreated": "2019-04-28 17:14:03.576799 -0400 EDT m=+0.001248668"
+    },
+    {
+      "version": "1.8",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 3",
+      "port": 25566,
+      "name": "test server 3",
+      "timeCreated": "2019-04-28 17:14:03.576924 -0400 EDT m=+0.001374054"
+    },
+    {
+      "version": "1.7.2",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 1",
+      "port": 25567,
+      "name": "test server 1",
+      "timeCreated": "2019-04-28 17:14:18.921096 -0400 EDT m=+0.000965300"
+    },
+    {
+      "version": "1.2.s",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 2",
+      "port": 25567,
+      "name": "test server 2",
+      "timeCreated": "2019-04-28 17:14:18.921247 -0400 EDT m=+0.001116061"
+    },
+    {
+      "version": "1.8",
+      "path": "/Users/bolt/go/src/github.com/xoreo/mcserver-backend/types/servers/test server 3",
+      "port": 25567,
+      "name": "test server 3",
+      "timeCreated": "2019-04-28 17:14:18.921319 -0400 EDT m=+0.001188044"
+    }
+  ]
+}

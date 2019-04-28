@@ -43,5 +43,4 @@ func NewServer(version, name string) (*Server, error) {
 	}
 
 	return newServer, nil
-
 }
