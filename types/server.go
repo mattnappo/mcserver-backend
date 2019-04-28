@@ -23,24 +23,16 @@ type Server struct {
 
 // NewServer constructs a new server struct.
 func NewServer(version, name string) (*Server, error) {
-	var url string
-
-	// Determine the server download url
-	switch version {
-	case "1.12":
-		url = common.ServerV112
-	case "1.8":
-		url = common.ServerV18
-	case "1.7.2":
-		url = common.ServerV172
-	case "1.2.1":
-		url = common.ServerV121
-	default:
-		return nil, ErrUnsupportedVersion
-	}
 
 	// Determine the path for the server
-	path := common.NewServerPath(name)
+	path, err := common.NewServerPath(name)
+	if err != nil {
+		return nil, err
+	}
+
+	// Determine the server port
+	var port int
+	// load file that has a []Server
 
 	// Create the new server
 	newServer := &Server{
