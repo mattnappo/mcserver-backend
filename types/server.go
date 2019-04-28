@@ -1,8 +1,8 @@
 package types
 
 import (
-	"time"
 	"errors"
+	"time"
 
 	"github.com/xoreo/mcserver-backend/common"
 )
@@ -39,13 +39,18 @@ func NewServer(version, name string) (*Server, error) {
 		return nil, ErrUnsupportedVersion
 	}
 
+	// Determine the path for the server
+	path := common.NewServerPath(name)
+
 	// Create the new server
 	newServer := &Server{
-		Version: version,
-		Path: path,
-		Port: port,
-		Name: name,
+		Version:     version,
+		Path:        path,
+		Port:        port,
+		Name:        name,
 		TimeCreated: time.Now().String(),
 	}
+
+	return newServer, nil
 
 }
