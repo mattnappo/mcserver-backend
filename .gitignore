@@ -2,6 +2,7 @@
 .vscode/
 counter.py
 dl/
+.DS_STORE
 
 
 # Binaries for programs and plugins
