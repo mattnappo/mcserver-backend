@@ -2,6 +2,7 @@ package commands
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -70,6 +71,7 @@ func CreateNewServer(server types.Server) error {
 	}
 
 	// Unzip the downloaded file
+	fmt.Println(zipPath)
 	_, err = common.Unzip(zipPath, server.Path)
 	if err != nil {
 		return err
