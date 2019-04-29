@@ -3,6 +3,8 @@
 counter.py
 dl/
 .DS_STORE
+servers/
+types/servers.json
 
 
 # Binaries for programs and plugins
