@@ -1,7 +1,10 @@
-package scripts
+package commands
 
 import (
 	"errors"
+	"io"
+	"net/http"
+	"os"
 
 	"github.com/xoreo/mcserver-backend/common"
 	"github.com/xoreo/mcserver-backend/types"
@@ -12,8 +15,34 @@ var (
 	ErrUnsupportedVersion = errors.New("that is not a supported version")
 )
 
-func downloadServerJar(url string) error {
-	return nil
+func downloadServerJar(url, localPath, version string) (string, error) {
+	// Get the data
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	// Create the directory
+	err = common.CreateDirIfDoesNotExist(localPath)
+	if err != nil {
+		return "", err
+	}
+
+	// Create the file
+	zipPath := localPath + "/" + version + ".zip"
+	out, err := os.Create(zipPath)
+	if err != nil {
+		return "", err
+	}
+	defer out.Close()
+
+	// Write the body to file
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return "", err
+	}
+	return zipPath, nil
 }
 
 // CreateNewServer creates a new server.
@@ -35,7 +64,13 @@ func CreateNewServer(server *types.Server) error {
 	}
 
 	// Download the pre-made server
-	err := downloadServerJar(url)
+	zipPath, err := downloadServerJar(url, (*server).Path, (*server).Version)
+	if err != nil {
+		return err
+	}
+
+	// Unzip the downloaded file
+	_, err = common.Unzip(zipPath, (*server).Path)
 	if err != nil {
 		return err
 	}
