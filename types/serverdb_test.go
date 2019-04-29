@@ -27,5 +27,4 @@ func TestServerDB(t *testing.T) {
 	(*db).AddServer(server2)
 	(*db).AddServer(server3)
 	(*db).Close()
-
 }
