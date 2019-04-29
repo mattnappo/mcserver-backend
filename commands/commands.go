@@ -46,11 +46,11 @@ func downloadServerJar(url, localPath, version string) (string, error) {
 }
 
 // CreateNewServer creates a new server.
-func CreateNewServer(server *types.Server) error {
+func CreateNewServer(server types.Server) error {
 	var url string
 
 	// Determine the pre-made server download url
-	switch (*server).Version {
+	switch server.Version {
 	case "1.12":
 		url = common.ServerV112
 	case "1.8":
@@ -64,13 +64,13 @@ func CreateNewServer(server *types.Server) error {
 	}
 
 	// Download the pre-made server
-	zipPath, err := downloadServerJar(url, (*server).Path, (*server).Version)
+	zipPath, err := downloadServerJar(url, server.Path, server.Version)
 	if err != nil {
 		return err
 	}
 
 	// Unzip the downloaded file
-	_, err = common.Unzip(zipPath, (*server).Path)
+	_, err = common.Unzip(zipPath, server.Path)
 	if err != nil {
 		return err
 	}

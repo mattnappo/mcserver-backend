@@ -12,7 +12,7 @@ func TestCreateNewServer(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = CreateNewServer(server1)
+	err = CreateNewServer(*server1)
 	if err != nil {
 		t.Fatal(err)
 	}
