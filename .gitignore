@@ -1,6 +1,8 @@
 # -- OTHER -- #
 .vscode/
 counter.py
+dl/
+
 
 # Binaries for programs and plugins
 *.exe
