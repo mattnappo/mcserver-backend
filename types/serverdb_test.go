@@ -12,7 +12,7 @@ func TestLoadDB(t *testing.T) {
 
 func TestAddServer(t *testing.T) {
 	version := "1.12"
-	name := "my-test-server"
+	name := "test-server"
 	var port uint32 = 25565
 	var ram uint32 = 1024
 	server, err := NewServer(version, name, port, ram)
@@ -34,7 +34,7 @@ func TestAddServer(t *testing.T) {
 
 func TestClose(t *testing.T) {
 	version := "1.12"
-	name := "my-test-server"
+	name := "test-server"
 	var port uint32 = 25565
 	var ram uint32 = 1024
 	server, err := NewServer(version, name, port, ram)

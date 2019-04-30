@@ -7,7 +7,7 @@ import (
 )
 
 func TestInitializeServer(t *testing.T) {
-	server1, err := types.NewServer("1.7.2", "test-server-1", 25565, 1024)
+	server1, err := types.NewServer("1.7.2", "test-server", 25565, 1024)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -19,7 +19,7 @@ func TestInitializeServer(t *testing.T) {
 }
 
 func TestStartServer(t *testing.T) {
-	server1, err := types.NewServer("1.7.2", "test-server-2", 25565, 1024)
+	server1, err := types.NewServer("1.7.2", "test-server", 25565, 1024)
 	if err != nil {
 		t.Fatal(err)
 	}
