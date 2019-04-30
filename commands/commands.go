@@ -113,9 +113,10 @@ func StartServer(server *types.Server) error {
 	}
 	dServer := *server // Dereference for convenience
 
-	launcher := filepath.Join(dServer.Path, dServer.Version, "start.sh")
-	output := exec.Command("/bin/sh", launcher)
-	fmt.Println(output)
+	launchPrefix := "cd " + dServer.Path + " && "
+	launcher := launchPrefix + filepath.Join(dServer.Path, dServer.Version, "start.sh")
+	cmd := exec.Command("/bin/sh", launcher)
+	fmt.Println(cmd.Output())
 
 	return nil
 }
