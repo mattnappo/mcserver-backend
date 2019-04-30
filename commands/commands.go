@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/xoreo/mcserver-backend/common"
 	"github.com/xoreo/mcserver-backend/types"
@@ -31,7 +32,7 @@ func downloadServerJar(url, localPath, version string) (string, error) {
 	}
 
 	// Create the file
-	zipPath := localPath + "/" + version + ".zip"
+	zipPath := filepath.Join(localPath, version+".zip")
 	out, err := os.Create(zipPath)
 	if err != nil {
 		return "", err
@@ -81,8 +82,10 @@ func CreateNewServer(server types.Server) error {
 }
 
 // StartServer starts a server.
-func StartServer(server *types.Server) {
-
+func StartServer(server types.Server) error {
+	startScriptPath := filepath.Join(server.Path, server.Version, "start.sh")
+	fmt.Println(startScriptPath)
+	return nil
 }
 
 // RestartServer restarts a server.
