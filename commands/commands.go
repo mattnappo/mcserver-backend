@@ -2,10 +2,12 @@ package commands
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/xoreo/mcserver-backend/common"
@@ -60,9 +62,10 @@ func downloadServerJar(url, localPath, version string) (string, error) {
 // InitializeServer initializes a new server onto the local machine.
 func InitializeServer(server *types.Server) error {
 	var url string
+	dServer := *server // Make a copy of the pointer (dereference for convenience)
 
 	// Determine the pre-made server download url
-	switch (*server).Version {
+	switch dServer.Version {
 	case "1.12":
 		url = common.ServerV112
 	case "1.8":
@@ -76,20 +79,20 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	// Download the pre-made server
-	zipPath, err := downloadServerJar(url, (*server).Path, (*server).Version)
+	zipPath, err := downloadServerJar(url, dServer.Path, dServer.Version)
 	if err != nil {
 		return err
 	}
 
 	// Unzip the downloaded file
-	_, err = common.Unzip(zipPath, (*server).Path)
+	_, err = common.Unzip(zipPath, dServer.Path)
 	if err != nil {
 		return err
 	}
 
 	// Create start script for the server
-	startScriptPath := filepath.Join(server.Path, server.Version, "start.sh")
-	serverJarPath := filepath.Join(server.Path, server.Version, server.Version+".jar")
+	startScriptPath := filepath.Join(dServer.Path, dServer.Version, "start.sh")
+	serverJarPath := filepath.Join(dServer.Path, dServer.Version, dServer.Version+".jar")
 	script := newStartScript(serverJarPath)
 
 	// Install the script
@@ -108,6 +111,11 @@ func StartServer(server *types.Server) error {
 	if !(*server).Initialized {
 		return ErrServerHasNotBeenInitialized
 	}
+	dServer := *server // Dereference for convenience
+
+	launcher := filepath.Join(dServer.Path, dServer.Version, "start.sh")
+	output := exec.Command("/bin/sh", launcher)
+	fmt.Println(output)
 
 	return nil
 }
