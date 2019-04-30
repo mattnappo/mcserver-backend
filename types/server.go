@@ -18,13 +18,14 @@ type Server struct {
 	Version     string `json:"version"`     // The server version
 	Path        string `json:"path"`        // The local path to the server
 	Port        int    `json:"port"`        // The port that the server runs on
+	RAM         int    `json:"ram"`         // The amount of ram to be allocated to the server
 	Name        string `json:"name"`        // The name of the server
 	TimeCreated string `json:"timeCreated"` // The time that the server was created
 	Initialized bool   `json:"created"`     // Whether the server has been initialized or not
 }
 
 // NewServer constructs a new server struct.
-func NewServer(version, name string, port int) (*Server, error) {
+func NewServer(version, name string, port, ram uint32) (*Server, error) {
 	// Determine the path for the server
 	path, err := common.NewServerPath(name)
 	if err != nil {
@@ -35,7 +36,8 @@ func NewServer(version, name string, port int) (*Server, error) {
 	newServer := &Server{
 		Version:     version,
 		Path:        path,
-		Port:        port,
+		Port:        int(port),
+		RAM:         int(ram),
 		Name:        name,
 		TimeCreated: time.Now().String(),
 		Initialized: false,
