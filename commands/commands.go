@@ -15,6 +15,9 @@ import (
 var (
 	// ErrUnsupportedVersion is thrown when an unsupported server version is given.
 	ErrUnsupportedVersion = errors.New("that is not a supported version")
+
+	// ErrServerHasNotBeenInitialized is thrown when a server's metadata exists but the server has not actually been initialized on the local machine.
+	ErrServerHasNotBeenInitialized = errors.New("that server has not actually been initialized yet. Initialize it with InitializeServer()")
 )
 
 func downloadServerJar(url, localPath, version string) (string, error) {
@@ -47,12 +50,12 @@ func downloadServerJar(url, localPath, version string) (string, error) {
 	return zipPath, nil
 }
 
-// CreateNewServer creates a new server.
-func CreateNewServer(server types.Server) error {
+// InitializeServer initializes a new server onto the local machine.
+func InitializeServer(server *types.Server) error {
 	var url string
 
 	// Determine the pre-made server download url
-	switch server.Version {
+	switch (*server).Version {
 	case "1.12":
 		url = common.ServerV112
 	case "1.8":
@@ -66,23 +69,26 @@ func CreateNewServer(server types.Server) error {
 	}
 
 	// Download the pre-made server
-	zipPath, err := downloadServerJar(url, server.Path, server.Version)
+	zipPath, err := downloadServerJar(url, (*server).Path, (*server).Version)
 	if err != nil {
 		return err
 	}
 
 	// Unzip the downloaded file
-	fmt.Println(zipPath)
-	_, err = common.Unzip(zipPath, server.Path)
+	_, err = common.Unzip(zipPath, (*server).Path)
 	if err != nil {
 		return err
 	}
 
+	server.Created = true // Set the server's created state = true
 	return nil
 }
 
 // StartServer starts a server.
-func StartServer(server types.Server) error {
+func StartServer(server *types.Server) error {
+	if !(*server).Created {
+		return ErrServerHasNotBeenInitialized
+	}
 	startScriptPath := filepath.Join(server.Path, server.Version, "start.sh")
 	fmt.Println(startScriptPath)
 	return nil

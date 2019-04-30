@@ -16,6 +16,7 @@ type ServerDB struct {
 
 // LoadDB returns the contents of a ServerDB file.
 func LoadDB() (*ServerDB, error) {
+	// Create the file (if it does not already exist)
 	file, err := os.OpenFile(ServerDBName, os.O_RDONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return nil, err
@@ -27,6 +28,8 @@ func LoadDB() (*ServerDB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// If the file is nil, load the empty array of servers
 	if len(rawRead) == 0 {
 		return &ServerDB{
 			Servers: []Server{},

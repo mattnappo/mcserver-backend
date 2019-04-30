@@ -20,6 +20,7 @@ type Server struct {
 	Port        int    `json:"port"`        // The port that the server runs on
 	Name        string `json:"name"`        // The name of the server
 	TimeCreated string `json:"timeCreated"` // The time that the server was created
+	Created     bool   `json:"created"`     // Whether the server has been created or not
 }
 
 // NewServer constructs a new server struct.
@@ -37,6 +38,7 @@ func NewServer(version, name string, port int) (*Server, error) {
 		Port:        port,
 		Name:        name,
 		TimeCreated: time.Now().String(),
+		Created:     false,
 	}
 
 	return newServer, nil
