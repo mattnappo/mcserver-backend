@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -40,3 +41,19 @@ func NewServer(version, name string, port int) (*Server, error) {
 
 	return newServer, nil
 }
+
+/* -- BEGIN HELPER METHODS -- */
+
+// Bytes returns the raw bytes of the marshalled server.
+func (server *Server) Bytes() []byte {
+	json, _ := json.MarshalIndent(*server, "", "  ")
+	return json
+}
+
+// String returns a string of the marshalled server.
+func (server *Server) String() string {
+	json, _ := json.MarshalIndent(*server, "", "  ")
+	return string(json)
+}
+
+/* -- END HELPER METHODS -- */
