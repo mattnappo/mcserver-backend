@@ -2,8 +2,8 @@ package commands
 
 import (
 	"errors"
-	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -19,6 +19,13 @@ var (
 	// ErrServerHasNotBeenInitialized is thrown when a server's metadata exists but the server has not actually been initialized on the local machine.
 	ErrServerHasNotBeenInitialized = errors.New("that server has not actually been initialized yet. Initialize it with InitializeServer()")
 )
+
+func newStartScript(path string) []byte {
+	header := "#!/bin/bash\njava -Xms8G -Xmx8G -jar "
+	body := path
+	footer := " nogui\n"
+	return []byte(header + body + footer)
+}
 
 func downloadServerJar(url, localPath, version string) (string, error) {
 	// Get the data
@@ -80,17 +87,28 @@ func InitializeServer(server *types.Server) error {
 		return err
 	}
 
-	server.Created = true // Set the server's created state = true
+	// Create start script for the server
+	startScriptPath := filepath.Join(server.Path, server.Version, "start.sh")
+	serverJarPath := filepath.Join(server.Path, server.Version, server.Version+".jar")
+	script := newStartScript(serverJarPath)
+
+	// Install the script
+	err = ioutil.WriteFile(startScriptPath, script, 0644)
+	if err != nil {
+		return err
+	}
+
+	server.Initialized = true // Set the server's initialized state to true
 	return nil
 }
 
 // StartServer starts a server.
 func StartServer(server *types.Server) error {
-	if !(*server).Created {
+	// Make sure that the server has been initialized.
+	if !(*server).Initialized {
 		return ErrServerHasNotBeenInitialized
 	}
-	startScriptPath := filepath.Join(server.Path, server.Version, "start.sh")
-	fmt.Println(startScriptPath)
+
 	return nil
 }
 

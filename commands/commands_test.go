@@ -19,5 +19,19 @@ func TestInitializeServer(t *testing.T) {
 }
 
 func TestStartServer(t *testing.T) {
+	server1, err := types.NewServer("1.7.2", "test-server-2", 25565)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = InitializeServer(server1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = StartServer(server1)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 }
