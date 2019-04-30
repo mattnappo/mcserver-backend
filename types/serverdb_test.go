@@ -2,29 +2,57 @@ package types
 
 import "testing"
 
-func TestServerDB(t *testing.T) {
+func TestLoadDB(t *testing.T) {
+	db, err := LoadDB()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(db.String())
+}
+
+func TestAddServer(t *testing.T) {
+	version := "1.12"
+	name := "my-test-server"
+	port := 25565
+	server, err := NewServer(version, name, port)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	db, err := LoadDB()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	server1, err := NewServer("1.7.2", "test-server-1", 25565)
+	t.Logf("[ before AddServer ] %s\n", db.String())
+
+	db.AddServer(server)
+
+	t.Logf("[ after AddServer ] %s\n", db.String())
+}
+
+func TestClose(t *testing.T) {
+	version := "1.12"
+	name := "my-test-server"
+	port := 25565
+	server, err := NewServer(version, name, port)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	server2, err := NewServer("1.2.1", "test-server-2", 25566)
+	db, err := LoadDB()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	server3, err := NewServer("1.8", "test-server-3", 25567)
+	t.Logf("[ before AddServer ] %s\n", db.String())
+
+	db.AddServer(server)
+
+	t.Logf("[ after AddServer ] %s\n", db.String())
+
+	err = db.Close()
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	(*db).AddServer(server1)
-	(*db).AddServer(server2)
-	(*db).AddServer(server3)
-	(*db).Close()
 }

@@ -56,3 +56,19 @@ func (db *ServerDB) Close() error {
 	}
 	return nil
 }
+
+/* -- BEGIN HELPER METHODS -- */
+
+// Bytes returns the raw bytes of the marshalled server database.
+func (db *ServerDB) Bytes() []byte {
+	json, _ := json.MarshalIndent(*db, "", "  ")
+	return json
+}
+
+// String returns a string of the marshalled server database.
+func (db *ServerDB) String() string {
+	json, _ := json.MarshalIndent(*db, "", "  ")
+	return string(json)
+}
+
+/* -- END HELPER METHODS -- */

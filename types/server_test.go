@@ -7,9 +7,9 @@ func TestNewServer(t *testing.T) {
 	name := "my-test-server"
 	port := 25565
 
-	_, err := NewServer(version, name, port)
+	server, err := NewServer(version, name, port)
 	if err != nil {
 		t.Fatal(err)
 	}
-
+	t.Log((*server).String())
 }
