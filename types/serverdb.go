@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 )
 
 // ServerDBName is the name of the server database.
@@ -15,6 +16,12 @@ type ServerDB struct {
 
 // LoadDB returns the contents of a ServerDB file.
 func LoadDB() (*ServerDB, error) {
+	file, err := os.OpenFile(ServerDBName, os.O_RDONLY|os.O_CREATE, 0644)
+	if err != nil {
+		return nil, err
+	}
+	file.Close()
+
 	// Read the database file
 	rawRead, err := ioutil.ReadFile(ServerDBName)
 	if err != nil {
