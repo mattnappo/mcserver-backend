@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 
@@ -62,9 +61,12 @@ func InitializeServer(server *types.Server) error {
 		return err
 	}
 
-	// Create start script for the server
+	// Create amd set the paths to be used later
 	workingPath := filepath.Join(dServer.Path, dServer.Version)
 	startScriptPath := filepath.Join(workingPath, "start.sh")
+	server.StartScript = startScriptPath // Set the script path for the server
+
+	// Create start script for the server
 	script := GenerateStartScript(dServer)
 
 	// Install the script
@@ -73,8 +75,19 @@ func InitializeServer(server *types.Server) error {
 		return err
 	}
 
+	// Generate a service
+	service, err := GenerateService(*server)
+	if err != nil {
+		return err
+	}
+
+	err = InstallService(service, server.Name)
+	if err != nil {
+		return err
+	}
+
 	server.Initialized = true // Set the server's initialized state to true
-	server.StartScript = startScriptPath
+	fmt.Println("INITIALIZED")
 	return nil
 }
 
@@ -86,25 +99,33 @@ func StartServer(server types.Server) error {
 	}
 
 	// Start the service (which runs the start script)
-	exec.Command("/bin/sh", "systemctl start "+server.Name)
-	status := exec.Command("/bin/sh", "systemctl status "+server.Name)
-	fmt.Println(status.Output())
+	common.Execute("start", server.Name)
 
 	return nil
 }
 
 // RestartServer restarts a server.
-func RestartServer(server types.Server) {
-	exec.Command("/bin/sh", "systemctl restart "+server.Name)
-	status := exec.Command("/bin/sh", "systemctl status "+server.Name)
-	fmt.Println(status.Output())
+func RestartServer(server types.Server) error {
+	// Make sure that the server has been initialized.
+	if !server.Initialized || server.StartScript == "" {
+		return ErrServerHasNotBeenInitialized
+	}
+
+	// Restart the server
+	common.Execute("restart", server.Name)
+	return nil
 }
 
 // StopServer stops a server.
-func StopServer(server types.Server) {
-	exec.Command("/bin/sh", "systemctl stop "+server.Name)
-	status := exec.Command("/bin/sh", "systemctl status "+server.Name)
-	fmt.Println(status.Output())
+func StopServer(server types.Server) error {
+	// Make sure that the server has been initialized.
+	if !server.Initialized || server.StartScript == "" {
+		return ErrServerHasNotBeenInitialized
+	}
+
+	// Restart the server
+	common.Execute("stop", server.Name)
+	return nil
 }
 
 // EnterServer launches a shell of the server console.
@@ -113,6 +134,6 @@ func EnterServer(server *types.Server) {
 }
 
 // EditProperties is used to edit a server property (such as max build height or default gamemode).
-func EditProperties(property, newValue string) error {
+func EditProperties(server types.Server, property, newValue string) error {
 	return nil
 }

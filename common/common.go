@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 )
@@ -131,4 +132,11 @@ func DownloadServer(url, localPath, version string) (string, error) {
 		return "", err
 	}
 	return zipPath, nil
+}
+
+// Execute executes a systemctl command on a certain service.
+func Execute(command, name string) {
+	exec.Command("/bin/sh", "systemctl "+command+" "+name)
+	status := exec.Command("/bin/sh", "systemctl status "+name)
+	fmt.Println(status.Output())
 }
