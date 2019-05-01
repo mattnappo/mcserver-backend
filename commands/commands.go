@@ -120,8 +120,7 @@ func StartServer(server *types.Server) error {
 		return ErrServerHasNotBeenInitialized
 	}
 
-	launchPrefix := "cd " + dServer.Path + " && "
-	launcher := launchPrefix + filepath.Join(dServer.Path, dServer.Version, "start.sh")
+	launcher := filepath.Join(dServer.Path, dServer.Version, "start.sh")
 	cmd := exec.Command("/bin/sh", launcher)
 	fmt.Println(cmd.Output())
 

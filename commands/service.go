@@ -27,17 +27,17 @@ func GenerateService(server types.Server) (string, error) {
 	}
 
 	service := `[Unit]
-	Description=` + server.Version + ` ` + ` Server (` + server.Name + `)
-	[Service]
-	User=` + user.Username + `
-	WorkingDirectory=` + workingDirectory + `
-	ExecStart=` + server.StartScript + `
-	SuccessExitStatus=143
-	TimeoutStopSec=10
-	Restart=on-failure
-	RestartSec=5
-	[Install]
-	WantedBy=multi-user.target`
+Description=` + server.Version + ` Server (` + server.Name + `)
+[Service]
+User=` + user.Username + `
+WorkingDirectory=` + workingDirectory + `
+ExecStart=` + server.StartScript + `
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target`
 
 	return service, nil
 }
