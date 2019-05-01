@@ -11,8 +11,8 @@ matrix:
     - go: master
   fast_finish: true
 
-notifications:
-  email: false
+# notifications:
+#   email: false
 
 before_install:
   - export GO111MODULE=on # Enable go mod
