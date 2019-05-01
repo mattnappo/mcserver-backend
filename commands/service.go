@@ -2,22 +2,31 @@ package commands
 
 import (
 	"os"
+	"os/user"
 
 	"github.com/xoreo/mcserver-backend/types"
 )
 
-func generateService(server types.Server) error {
+// GenerateService generates a Linux service file that runs the Minecraft server.
+func GenerateService(server types.Server) (string, error) {
+	// Get the current working directory
 	workingDirectory, err := os.Getwd()
 	if err != nil {
-		return err
+		return "", err
+	}
+
+	// Get the current user
+	user, err := user.Current()
+	if err != nil {
+		return "", err
 	}
 
 	service := `[Unit]
 	Description=` + server.Version + ` ` + ` Server (` + server.Name + `)
 	[Service]
-	User=ubuntu
+	User=` + user.Name + `
 	WorkingDirectory=` + workingDirectory + `
-	ExecStart=/home/ubuntu/workspace/my-webapp
+	ExecStart=` + server.StartScript + `
 	SuccessExitStatus=143
 	TimeoutStopSec=10
 	Restart=on-failure
@@ -25,5 +34,5 @@ func generateService(server types.Server) error {
 	[Install]
 	WantedBy=multi-user.target`
 
-	return nil
+	return service, nil
 }

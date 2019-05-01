@@ -22,6 +22,7 @@ type Server struct {
 	Name        string `json:"name"`        // The name of the server
 	TimeCreated string `json:"timeCreated"` // The time that the server was created
 	Initialized bool   `json:"created"`     // Whether the server has been initialized or not
+	StartScript string `json:"startScript"` // The path to the start.sh script
 }
 
 // NewServer constructs a new server struct.
@@ -41,6 +42,7 @@ func NewServer(version, name string, port, ram uint32) (*Server, error) {
 		Name:        name,
 		TimeCreated: time.Now().String(),
 		Initialized: false,
+		StartScript: "",
 	}
 
 	return newServer, nil

@@ -102,6 +102,7 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	server.Initialized = true // Set the server's initialized state to true
+	server.StartScript = startScriptPath
 	return nil
 }
 
