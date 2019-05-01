@@ -1,0 +1,6 @@
+BUGS
+==========
+no spaces in server names
+no duplicate server names
+no duplicate / overwriting servers
+cleanup prebuilt server, no MACOS stuff

@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 
 	"github.com/xoreo/mcserver-backend/common"
 	"github.com/xoreo/mcserver-backend/types"
@@ -22,11 +23,16 @@ var (
 	ErrServerHasNotBeenInitialized = errors.New("that server has not actually been initialized yet. Initialize it with InitializeServer()")
 )
 
-func newStartScript(path string, ram int) []byte {
-	header := "#!/bin/bash\njava -Xms" + string(ram) + "MB -Xmx" + string(ram) + "MB -jar "
-	body := path
-	footer := " nogui\n"
-	return []byte(header + body + footer)
+func newStartScript(server types.Server) []byte {
+	ramstr := strconv.Itoa(server.RAM) // Convert the ram to a string
+
+	path := filepath.Join(server.Path, server.Version)
+	script :=
+		`#!/bin/bash
+		cd ` + path + `
+		java -Xms` + ramstr + `M -Xmx` + ramstr + `M -jar ` + path + `/` + server.Version + `.jar nogui
+	`
+	return []byte(script)
 }
 
 func downloadServerJar(url, localPath, version string) (string, error) {
@@ -91,9 +97,10 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	// Create start script for the server
-	startScriptPath := filepath.Join(dServer.Path, dServer.Version, "start.sh")
-	serverJarPath := filepath.Join(dServer.Path, dServer.Version, dServer.Version+".jar")
-	script := newStartScript(serverJarPath, dServer.RAM)
+	workingPath := filepath.Join(dServer.Path, dServer.Version)
+	startScriptPath := filepath.Join(workingPath, "start.sh")
+	serverJarPath := filepath.Join(workingPath, dServer.Version+".jar")
+	script := newStartScript(workingPath, dServer.RAM)
 
 	// Install the script
 	err = ioutil.WriteFile(startScriptPath, script, 0644)
