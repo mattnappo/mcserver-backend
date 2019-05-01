@@ -79,17 +79,16 @@ func InitializeServer(server *types.Server) error {
 }
 
 // StartServer starts a server.
-func StartServer(server *types.Server) error {
-	dServer := *server // Dereference for convenience
-
+func StartServer(server types.Server) error {
 	// Make sure that the server has been initialized.
-	if !dServer.Initialized || dServer.StartScript == "" {
+	if !server.Initialized || server.StartScript == "" {
 		return ErrServerHasNotBeenInitialized
 	}
 
-	launcher := filepath.Join(dServer.Path, dServer.Version, "start.sh")
-	cmd := exec.Command("/bin/sh", launcher)
-	fmt.Println(cmd.Output())
+	// Start the service (which runs the start script)
+	exec.Command("/bin/sh", "systemctl start "+server.Name)
+	status := exec.Command("/bin/sh", "systemctl status "+server.Name)
+	fmt.Println(status.Output())
 
 	return nil
 }
