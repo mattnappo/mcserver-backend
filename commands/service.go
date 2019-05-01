@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -58,9 +57,8 @@ func InstallService(service, name string) error {
 		return err
 	}
 
-	_ = exec.Command("/bin/sh", "systemctl daemon-reload && systemctl start "+serviceName)
-	status := exec.Command("/bin/sh", "systemctl status "+serviceName)
-	fmt.Println(status.Output())
+	// Execute the necessary commands to register the daemon
+	exec.Command("/bin/sh", "systemctl daemon-reload")
 
 	return nil
 }

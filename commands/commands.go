@@ -95,13 +95,17 @@ func StartServer(server *types.Server) error {
 }
 
 // RestartServer restarts a server.
-func RestartServer(server *types.Server) {
-
+func RestartServer(server types.Server) {
+	exec.Command("/bin/sh", "systemctl restart "+server.Name)
+	status := exec.Command("/bin/sh", "systemctl status "+server.Name)
+	fmt.Println(status.Output())
 }
 
 // StopServer stops a server.
-func StopServer(server *types.Server) {
-
+func StopServer(server types.Server) {
+	exec.Command("/bin/sh", "systemctl stop "+server.Name)
+	status := exec.Command("/bin/sh", "systemctl status "+server.Name)
+	fmt.Println(status.Output())
 }
 
 // EnterServer launches a shell of the server console.
