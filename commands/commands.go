@@ -108,11 +108,12 @@ func InitializeServer(server *types.Server) error {
 
 // StartServer starts a server.
 func StartServer(server *types.Server) error {
+	dServer := *server // Dereference for convenience
+
 	// Make sure that the server has been initialized.
-	if !(*server).Initialized {
+	if !dServer.Initialized || dServer.StartScript == "" {
 		return ErrServerHasNotBeenInitialized
 	}
-	dServer := *server // Dereference for convenience
 
 	launchPrefix := "cd " + dServer.Path + " && "
 	launcher := launchPrefix + filepath.Join(dServer.Path, dServer.Version, "start.sh")
