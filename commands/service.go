@@ -1,8 +1,12 @@
 package commands
 
 import (
+	"fmt"
+	"io/ioutil"
 	"os"
+	"os/exec"
 	"os/user"
+	"path/filepath"
 
 	"github.com/xoreo/mcserver-backend/types"
 )
@@ -40,4 +44,28 @@ RestartSec=5
 WantedBy=multi-user.target`
 
 	return service, nil
+}
+
+// InstallService installs a service to the system.
+func InstallService(service, name string) error {
+	serviceName := name + ".service" // For convenience
+	// Init the path to the system services (Linux only)
+	path := filepath.Join("/etc/systemd/system/", serviceName)
+
+	// Write the service to the file
+	err := ioutil.WriteFile(path, []byte(service), 0644)
+	if err != nil {
+		return err
+	}
+
+	_ = exec.Command("/bin/sh", "systemctl daemon-reload && systemctl start "+serviceName)
+	status := exec.Command("/bin/sh", "systemctl status "+serviceName)
+	fmt.Println(status.Output())
+
+	return nil
+}
+
+// UninstallService uninstalls a service from the system.
+func UninstallService(service string) error {
+	return nil // Placeholder
 }

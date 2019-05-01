@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -99,4 +100,35 @@ func Unzip(src string, dest string) ([]string, error) {
 		}
 	}
 	return filenames, nil
+}
+
+// DownloadServer downloads and installs a pre-made server of the specified version.
+func DownloadServer(url, localPath, version string) (string, error) {
+	// Get the data
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	// Create the directory
+	err = CreateDirIfDoesNotExist(localPath)
+	if err != nil {
+		return "", err
+	}
+
+	// Create the file
+	zipPath := filepath.Join(localPath, version+".zip")
+	out, err := os.Create(zipPath)
+	if err != nil {
+		return "", err
+	}
+	defer out.Close()
+
+	// Write the body to file
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return "", err
+	}
+	return zipPath, nil
 }

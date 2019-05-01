@@ -3,10 +3,7 @@ package commands
 import (
 	"errors"
 	"fmt"
-	"io"
 	"io/ioutil"
-	"net/http"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
@@ -34,36 +31,6 @@ java -Xms` + ramstr + `M -Xmx` + ramstr + `M -jar ` + path + `/` + server.Versio
 	return []byte(script)
 }
 
-func downloadServerJar(url, localPath, version string) (string, error) {
-	// Get the data
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	// Create the directory
-	err = common.CreateDirIfDoesNotExist(localPath)
-	if err != nil {
-		return "", err
-	}
-
-	// Create the file
-	zipPath := filepath.Join(localPath, version+".zip")
-	out, err := os.Create(zipPath)
-	if err != nil {
-		return "", err
-	}
-	defer out.Close()
-
-	// Write the body to file
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		return "", err
-	}
-	return zipPath, nil
-}
-
 // InitializeServer initializes a new server onto the local machine.
 func InitializeServer(server *types.Server) error {
 	var url string
@@ -84,7 +51,7 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	// Download the pre-made server
-	zipPath, err := downloadServerJar(url, dServer.Path, dServer.Version)
+	zipPath, err := common.DownloadServer(url, dServer.Path, dServer.Version)
 	if err != nil {
 		return err
 	}
@@ -137,7 +104,12 @@ func StopServer(server *types.Server) {
 
 }
 
-// EnterServer enters the shell of the server.
+// EnterServer launches a shell of the server console.
 func EnterServer(server *types.Server) {
 
+}
+
+// EditProperties is used to edit a server property (such as max build height or default gamemode).
+func EditProperties(property, newValue string) error {
+	return nil
 }
