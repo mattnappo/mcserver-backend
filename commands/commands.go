@@ -23,15 +23,14 @@ var (
 	ErrServerHasNotBeenInitialized = errors.New("that server has not actually been initialized yet. Initialize it with InitializeServer()")
 )
 
-func newStartScript(server types.Server) []byte {
+// GenerateStartScript generates the script that launches the server.
+func GenerateStartScript(server types.Server) []byte {
 	ramstr := strconv.Itoa(server.RAM) // Convert the ram to a string
 
 	path := filepath.Join(server.Path, server.Version)
-	script :=
-		`#!/bin/bash
-		cd ` + path + `
-		java -Xms` + ramstr + `M -Xmx` + ramstr + `M -jar ` + path + `/` + server.Version + `.jar nogui
-	`
+	script := `#!/bin/bash
+cd ` + path + `
+java -Xms` + ramstr + `M -Xmx` + ramstr + `M -jar ` + path + `/` + server.Version + `.jar nogui`
 	return []byte(script)
 }
 
@@ -99,8 +98,7 @@ func InitializeServer(server *types.Server) error {
 	// Create start script for the server
 	workingPath := filepath.Join(dServer.Path, dServer.Version)
 	startScriptPath := filepath.Join(workingPath, "start.sh")
-	serverJarPath := filepath.Join(workingPath, dServer.Version+".jar")
-	script := newStartScript(workingPath, dServer.RAM)
+	script := GenerateStartScript(dServer)
 
 	// Install the script
 	err = ioutil.WriteFile(startScriptPath, script, 0644)
