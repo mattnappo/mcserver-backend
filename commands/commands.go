@@ -93,6 +93,8 @@ func InitializeServer(server *types.Server) error {
 
 // StartServer starts a server.
 func StartServer(server types.Server) error {
+	fmt.Println(server.Initialized)
+	fmt.Printf("\n\nDEBUG: %s", server.StartScript)
 	// Make sure that the server has been initialized.
 	if !server.Initialized || server.StartScript == "" {
 		return ErrServerHasNotBeenInitialized

@@ -12,11 +12,6 @@ import (
 
 // GenerateService generates a Linux service file that runs the Minecraft server.
 func GenerateService(server types.Server) (string, error) {
-	// Make sure that the server has been initialized.
-	if !server.Initialized || server.StartScript == "" {
-		return "", ErrServerHasNotBeenInitialized
-	}
-
 	// Get the current working directory
 	workingDirectory, err := os.Getwd()
 	if err != nil {

@@ -30,6 +30,9 @@ func TestInitializeServer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Log("\n\n\n\n")
+	t.Log(server1.Initialized)
+	t.Log("\n\n\n\n")
 }
 
 func TestStartServer(t *testing.T) {
@@ -41,7 +44,6 @@ func TestStartServer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 }
 
 func TestRestartServer(t *testing.T) {

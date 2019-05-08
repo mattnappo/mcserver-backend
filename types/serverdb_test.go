@@ -3,11 +3,11 @@ package types
 import "testing"
 
 func TestLoadDB(t *testing.T) {
-	db, err := LoadDB()
+	_, err := LoadDB()
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log(db.String())
+	// t.Log(db.String())
 }
 
 func TestAddServer(t *testing.T) {
