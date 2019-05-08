@@ -1,7 +1,9 @@
 language: go
 
-go:
-  - 1.12
+sudo: true
+dist: xenial
+
+go: 1.12
 
 install: true
 sudo: false
