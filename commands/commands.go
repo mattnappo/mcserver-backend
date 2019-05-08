@@ -2,7 +2,6 @@ package commands
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"path/filepath"
 	"strconv"
@@ -87,14 +86,11 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	server.Initialized = true // Set the server's initialized state to true
-	fmt.Println("INITIALIZED")
 	return nil
 }
 
 // StartServer starts a server.
 func StartServer(server types.Server) error {
-	fmt.Println(server.Initialized)
-	fmt.Printf("\n\nDEBUG: %s", server.StartScript)
 	// Make sure that the server has been initialized.
 	if !server.Initialized || server.StartScript == "" {
 		return ErrServerHasNotBeenInitialized
