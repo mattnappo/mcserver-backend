@@ -19,5 +19,5 @@ before_install:
   - go mod vendor # Download deps
 
 script:
-  - sudo go test ./... # Test
+  - go test ./... # Test
   - go build # Build
