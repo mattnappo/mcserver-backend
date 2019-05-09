@@ -59,6 +59,13 @@ func InstallService(service, name string) error {
 }
 
 // UninstallService uninstalls a service from the system.
-func UninstallService(service string) error {
-	return nil // Placeholder
+func UninstallService(serviceName string) (string, error) {
+	command := exec.Command("/bin/sh", "rm /etc/systemd/system/"+serviceName+".service") // Delete the service
+
+	output, err := command.Output() // Get the output
+	if err != nil {
+		return "", err
+	}
+
+	return string(output), nil // Return the output
 }
