@@ -17,16 +17,25 @@ func TestGenerateService(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = InitializeServer(server)
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	service, err := GenerateService(*server)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	t.Log(service)
+}
+
+func TestInstallService(t *testing.T) {
+	server, err := getTestServer()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	service, err := GenerateService(*server)
+
+	err = InstallService(service, server.Name)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 }

@@ -80,6 +80,7 @@ func InitializeServer(server *types.Server) error {
 		return err
 	}
 
+	// Install the generated service
 	err = InstallService(service, server.Name)
 	if err != nil {
 		return err
@@ -89,41 +90,50 @@ func InitializeServer(server *types.Server) error {
 	return nil
 }
 
-// StartServer starts a server.
-func StartServer(server types.Server) error {
+// StartServer starts a server and returns the current status of the service.
+func StartServer(server types.Server) (string, error) {
 	// Make sure that the server has been initialized.
 	if !server.Initialized || server.StartScript == "" {
-		return ErrServerHasNotBeenInitialized
+		return "", ErrServerHasNotBeenInitialized
 	}
 
 	// Start the service (which runs the start script)
-	common.Execute("start", server.Name)
+	status, err := common.Execute("start", server.Name)
+	if err != nil {
+		return "", err
+	}
 
-	return nil
+	return status, nil
 }
 
-// RestartServer restarts a server.
-func RestartServer(server types.Server) error {
+// RestartServer restarts a server and returns the current status of the service.
+func RestartServer(server types.Server) (string, error) {
 	// Make sure that the server has been initialized.
 	if !server.Initialized || server.StartScript == "" {
-		return ErrServerHasNotBeenInitialized
+		return "", ErrServerHasNotBeenInitialized
 	}
 
 	// Restart the server
-	common.Execute("restart", server.Name)
-	return nil
+	status, err := common.Execute("restart", server.Name)
+	if err != nil {
+		return "", err
+	}
+	return status, nil
 }
 
-// StopServer stops a server.
-func StopServer(server types.Server) error {
+// StopServer stops a server and returns the current status of the service.
+func StopServer(server types.Server) (string, error) {
 	// Make sure that the server has been initialized.
 	if !server.Initialized || server.StartScript == "" {
-		return ErrServerHasNotBeenInitialized
+		return "", ErrServerHasNotBeenInitialized
 	}
 
 	// Restart the server
-	common.Execute("stop", server.Name)
-	return nil
+	status, err := common.Execute("stop", server.Name)
+	if err != nil {
+		return "", err
+	}
+	return status, nil
 }
 
 // EnterServer launches a shell of the server console.

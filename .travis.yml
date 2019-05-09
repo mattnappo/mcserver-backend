@@ -1,12 +1,8 @@
 language: go
-
-sudo: true
-dist: xenial
-
 go: 1.12
 
 install: true
-sudo: false
+sudo: true
 
 matrix:
   allow_failures:
@@ -17,6 +13,7 @@ matrix:
 #   email: false
 
 before_install:
+  - sudo apt-get install systemd
   - export GO111MODULE=on # Enable go mod
   - go mod vendor # Download deps
 
