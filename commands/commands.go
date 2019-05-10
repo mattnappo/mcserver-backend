@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strconv"
+	"fmt"
 
 	"github.com/xoreo/mcserver-backend/common"
 	"github.com/xoreo/mcserver-backend/types"
@@ -92,6 +93,7 @@ func InitializeServer(server *types.Server) error {
 
 // StartServer starts a server and returns the current status of the service.
 func StartServer(server types.Server) (string, error) {
+	fmt.Println("CALLED STARTSERVER")
 	// Make sure that the server has been initialized.
 	if !server.Initialized || server.StartScript == "" {
 		return "", ErrServerHasNotBeenInitialized
@@ -100,7 +102,8 @@ func StartServer(server types.Server) (string, error) {
 	// Start the service (which runs the start script)
 	status, err := common.Execute("start", server.Name)
 	if err != nil {
-		return "", err
+		fmt.Println("EPIC FAIL")
+		return "epic fail", err
 	}
 
 	return status, nil

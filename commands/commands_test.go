@@ -2,12 +2,15 @@ package commands
 
 import (
 	"testing"
+	"math/rand"
+	"strconv"
 
 	"github.com/xoreo/mcserver-backend/types"
 )
 
 func getTestServer() (*types.Server, error) {
-	server, err := types.NewServer("1.7.2", "test-server", 25565, 1024)
+	randomName := strconv.Itoa(rand.Intn(100000))
+	server, err := types.NewServer("1.7.2", "server-"+randomName, 25565, 1024)
 	if err != nil {
 		return nil, err
 	}
