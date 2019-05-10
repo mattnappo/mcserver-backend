@@ -38,3 +38,7 @@ func TestInstallService(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestUninstallService(t *testing.T) {
+
+}
