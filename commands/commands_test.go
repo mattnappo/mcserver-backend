@@ -37,10 +37,13 @@ func TestStartServer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = StartServer(*server)
+
+	status, err := StartServer(*server)
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	t.Log(status)
 }
 
 func TestRestartServer(t *testing.T) {
@@ -49,7 +52,12 @@ func TestRestartServer(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	RestartServer(*server)
+	status, err := RestartServer(*server)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(status)
 }
 
 func TestStopServer(t *testing.T) {
@@ -58,5 +66,10 @@ func TestStopServer(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	RestartServer(*server)
+	status, err := StopServer(*server)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(status)
 }
