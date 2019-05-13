@@ -1,13 +1,21 @@
 package commands
 
 import (
+	"math/rand"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/xoreo/mcserver-backend/types"
 )
 
 func getTestServer() (*types.Server, error) {
-	server, err := types.NewServer("1.7.2", "test-server", 25565, 1024)
+	rand.Seed(time.Now().UnixNano())
+	min := 25565
+	max := 26000
+	random := rand.Intn(max-min) + min
+
+	server, err := types.NewServer("1.7.2", "server-"+strconv.Itoa(random), uint32(random), 1024)
 	if err != nil {
 		return nil, err
 	}
@@ -21,12 +29,7 @@ func getTestServer() (*types.Server, error) {
 }
 
 func TestInitializeServer(t *testing.T) {
-	server1, err := types.NewServer("1.7.2", "test-server", 25565, 1024)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = InitializeServer(server1)
+	_, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
