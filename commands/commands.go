@@ -94,14 +94,18 @@ func InitializeServer(server *types.Server) error {
 
 // StartServer starts a server and returns the current status of the service.
 func StartServer(server types.Server) error {
-	// Make sure that the server has been initialized.
 	if !server.Initialized || server.StartScript == "" {
 		return ErrServerHasNotBeenInitialized
 	}
 
 	// Start the service (which runs the start script)
 	// err := common.Execute("start", server.Name)
-	cmd := exec.Command("/bin/sh", "systemctl start "+server.Name+".service") // Execute the systemctl command
+	command := "sudo /bin/systemctl start " + server.Name + ".service"
+	// command := "systemctl start " + server.Name + ".service"
+	// command := "/home/anton/go/src/github.com/xoreo/mcserver-backend/start.sh"
+	fmt.Println(command)
+	fmt.Println("RUNNING")
+	cmd := exec.Command("/bin/sh", command) // Execute the systemctl command
 	output, err := cmd.Output()
 	if err != nil {
 		return err
