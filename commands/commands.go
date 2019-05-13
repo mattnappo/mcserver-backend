@@ -2,6 +2,7 @@ package commands
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os/exec"
 	"path/filepath"
@@ -100,7 +101,12 @@ func StartServer(server types.Server) error {
 
 	// Start the service (which runs the start script)
 	// err := common.Execute("start", server.Name)
-	exec.Command("/bin/sh", "systemctl start "+server.Name+".service") // Execute the systemctl command
+	cmd := exec.Command("/bin/sh", "systemctl start "+server.Name+".service") // Execute the systemctl command
+	output, err := cmd.Output()
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(output))
 	// if err != nil {
 	// 	return err
 	// }
