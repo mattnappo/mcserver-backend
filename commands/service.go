@@ -53,14 +53,17 @@ func InstallService(service, name string) error {
 	}
 
 	// Execute the necessary commands to register the daemon
-	exec.Command("/bin/sh", "systemctl daemon-reload")
+
+	exec.Command("/bin/sh", "sudo systemctl daemon-reload")
+	exec.Command("/bin/sh", "sudo systemctl enable "+serviceName)
+	exec.Command("/bin/sh", "sudo systemctl daemon-reload")
 
 	return nil
 }
 
 // UninstallService uninstalls a service from the system.
 func UninstallService(serviceName string) (string, error) {
-	command := exec.Command("/bin/sh", "rm /etc/systemd/system/"+serviceName+".service") // Delete the service
+	command := exec.Command("/bin/sh", "sudo rm /etc/systemd/system/"+serviceName+".service") // Delete the service
 
 	output, err := command.Output() // Get the output
 	if err != nil {
