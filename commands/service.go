@@ -54,8 +54,6 @@ func InstallService(service, name string) error {
 
 	// Execute the necessary commands to register the daemon
 	exec.Command("/bin/sh", "sudo systemctl daemon-reload")
-	exec.Command("/bin/sh", "sudo systemctl enable "+serviceName)
-	exec.Command("/bin/sh", "sudo systemctl daemon-reload")
 
 	return nil
 }

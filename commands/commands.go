@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"io/ioutil"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 
@@ -98,10 +99,11 @@ func StartServer(server types.Server) error {
 	}
 
 	// Start the service (which runs the start script)
-	err := common.Execute("start", server.Name)
-	if err != nil {
-		return err
-	}
+	// err := common.Execute("start", server.Name)
+	exec.Command("/bin/sh", "systemctl start "+server.Name+".service") // Execute the systemctl command
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
