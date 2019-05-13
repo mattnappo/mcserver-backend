@@ -137,12 +137,5 @@ func DownloadServer(url, localPath, version string) (string, error) {
 // Execute executes a systemctl command on a certain service.
 func Execute(command, name string) (string, error) {
 	exec.Command("/bin/sh", "sudo systemctl "+command+" "+name)      // Execute the systemctl command
-	status := exec.Command("/bin/sh", "sudo systemctl status "+name) // Get the status of the service
-
-	statusOutput, err := status.Output() // Get the output
-	if err != nil {
-		return "", err
-	}
-
-	return string(statusOutput), nil // Return
+	return "", nil
 }
