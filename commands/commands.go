@@ -2,7 +2,7 @@ package commands
 
 import (
 	"errors"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"os/exec"
 	"path/filepath"
@@ -99,21 +99,13 @@ func StartServer(server types.Server) error {
 	}
 
 	// Start the service (which runs the start script)
-	// err := common.Execute("start", server.Name)
-	command := "sudo /bin/systemctl start " + server.Name + ".service"
-	// command := "systemctl start " + server.Name + ".service"
-	// command := "/home/anton/go/src/github.com/xoreo/mcserver-backend/start.sh"
-	fmt.Println(command)
-	fmt.Println("RUNNING")
-	cmd := exec.Command("/bin/sh", command) // Execute the systemctl command
-	output, err := cmd.Output()
+	cmd := exec.Command("/bin/systemctl", "start", server.Name) // Execute the systemctl command
+	
+	// Get the output
+	_, err := cmd.Output()
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(output))
-	// if err != nil {
-	// 	return err
-	// }
 
 	return nil
 }
