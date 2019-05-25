@@ -92,52 +92,39 @@ func InitializeServer(server *types.Server) error {
 	return nil
 }
 
-// StartServer starts a server and returns the current status of the service.
-func StartServer(server types.Server) error {
+// Execute executes a systemctl command (start, stop, restart, status) on a certain server.
+func Execute(command string, server types.Server) (string, err) {
+	// Check to make sure that the server is initialized
 	if !server.Initialized || server.StartScript == "" {
-		return ErrServerHasNotBeenInitialized
+		return "", ErrServerHasNotBeenInitialized
 	}
 
-	// Start the service (which runs the start script)
-	cmd := exec.Command("/bin/systemctl", "start", server.Name) // Execute the systemctl command
-	
+	var execCommand string
+
+	// Make sure that it is a valid command
+	switch command {
+	case "start":
+		break
+	case "stop":
+		break
+	case "status":
+		break
+	case "restart":
+		break
+	default:
+		return "", errors.New("that is not a valid command to execute")
+	}
+
+	// Execute the systemctl command
+	cmd := exec.Command("/bin/systemctl", command, server.Name)
+
 	// Get the output
-	_, err := cmd.Output()
+	output, err := cmd.Output()
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
-}
-
-// RestartServer restarts a server and returns the current status of the service.
-func RestartServer(server types.Server) error {
-	// Make sure that the server has been initialized.
-	if !server.Initialized || server.StartScript == "" {
-		return ErrServerHasNotBeenInitialized
-	}
-
-	// Restart the server
-	err := common.Execute("restart", server.Name)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// StopServer stops a server and returns the current status of the service.
-func StopServer(server types.Server) error {
-	// Make sure that the server has been initialized.
-	if !server.Initialized || server.StartScript == "" {
-		return ErrServerHasNotBeenInitialized
-	}
-
-	// Stop the server
-	err := common.Execute("stop", server.Name)
-	if err != nil {
-		return err
-	}
-	return nil
+	return output, nil
 }
 
 // EnterServer launches a shell of the server console.

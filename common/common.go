@@ -133,9 +133,3 @@ func DownloadServer(url, localPath, version string) (string, error) {
 	}
 	return zipPath, nil
 }
-
-// Execute executes a systemctl command on a certain service.
-func Execute(command, name string) error {
-	exec.Command("/bin/sh", "sudo systemctl "+command+" "+name) // Execute the systemctl command
-	return nil
-}
