@@ -93,13 +93,11 @@ func InitializeServer(server *types.Server) error {
 }
 
 // Execute executes a systemctl command (start, stop, restart, status) on a certain server.
-func Execute(command string, server types.Server) (string, err) {
+func Execute(command string, server types.Server) (string, error) {
 	// Check to make sure that the server is initialized
 	if !server.Initialized || server.StartScript == "" {
 		return "", ErrServerHasNotBeenInitialized
 	}
-
-	var execCommand string
 
 	// Make sure that it is a valid command
 	switch command {
@@ -124,7 +122,7 @@ func Execute(command string, server types.Server) (string, err) {
 		return "", err
 	}
 
-	return output, nil
+	return string(output), nil
 }
 
 // EnterServer launches a shell of the server console.

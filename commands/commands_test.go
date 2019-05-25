@@ -35,38 +35,17 @@ func TestInitializeServer(t *testing.T) {
 	}
 }
 
-func TestStartServer(t *testing.T) {
+func TestExecute(t *testing.T) {
 	server, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = StartServer(*server)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestRestartServer(t *testing.T) {
-	server, err := getTestServer()
+	output, err := Execute("start", *server)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = RestartServer(*server)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
+	t.Log(output)
 
-func TestStopServer(t *testing.T) {
-	server, err := getTestServer()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = StopServer(*server)
-	if err != nil {
-		t.Fatal(err)
-	}
 }
