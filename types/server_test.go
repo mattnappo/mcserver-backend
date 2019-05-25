@@ -4,7 +4,7 @@ import "testing"
 
 func TestNewServer(t *testing.T) {
 	version := "1.12"
-	name := "test-server"
+	name := "test server 1  1 1"
 	var port uint32 = 25565
 	var ram uint32 = 1024
 

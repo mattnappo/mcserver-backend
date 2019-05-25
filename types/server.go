@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/xoreo/mcserver-backend/common"
@@ -32,6 +33,9 @@ func NewServer(version, name string, port, ram uint32) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// Replace spaces with '-' in server name
+	name = strings.Replace(name, " ", "-", -1)
 
 	// Create the new server
 	newServer := &Server{
