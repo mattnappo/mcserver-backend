@@ -35,17 +35,79 @@ func TestInitializeServer(t *testing.T) {
 	}
 }
 
-func TestExecute(t *testing.T) {
+func testExecute(command string, server *types.Server) (string, error) {
+	output, err := Execute(command, *server)
+	if err != nil {
+		return "", err
+	}
+	return output, nil
+}
+func TestExecuteStart(t *testing.T) {
 	server, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	output, err := Execute("start", *server)
+	output, err := testExecute("start", server)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(output)
+}
+
+func TestExecuteStop(t *testing.T) {
+	server, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	output, err := testExecute("start", server)
+	if err != nil {
+		t.Fatal(err)
+	}
 	t.Log(output)
 
+	output, err = testExecute("stop", server)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(output)
+}
+
+func TestExecuteStatus(t *testing.T) {
+	server, err := getTestServer()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	output, err := testExecute("start", server)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(output)
+
+	output, err = testExecute("status", server)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(output)
+}
+
+func TestExecuteRestart(t *testing.T) {
+	server, err := getTestServer()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	output, err := testExecute("start", server)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(output)
+
+	output, err = testExecute("restart", server)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(output)
 }
