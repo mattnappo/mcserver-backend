@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
 )
@@ -47,8 +48,15 @@ func LoadDB() (*ServerDB, error) {
 }
 
 // AddServer adds a server to the database
-func (db *ServerDB) AddServer(server *Server) {
-	(*db).Servers = append((*db).Servers, *server)
+func (db *ServerDB) AddServer(server *Server) error {
+	for _, currentServer := range db.Servers {
+		if currentServer.Name == server.Name {
+			return errors.New("that server name is already in use")
+		}
+	}
+
+	db.Servers = append((*db).Servers, *server)
+	return nil
 }
 
 // Close closes and writes changes to the database file

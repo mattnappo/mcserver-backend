@@ -2,7 +2,6 @@ package common
 
 import (
 	"archive/zip"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -14,11 +13,6 @@ import (
 const (
 	// ServersRoot is the root directory where all of the servers are stored.
 	ServersRoot = "servers/"
-)
-
-var (
-	// ErrServernameAlreadyInUse is thrown when there is already a server with that name
-	ErrServernameAlreadyInUse = errors.New("that server name is already in use")
 )
 
 // CreateDirIfDoesNotExist creates a directory if it does not already exist.
