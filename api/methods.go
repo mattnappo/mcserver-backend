@@ -1,10 +1,15 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	// "github.com/xoreo/mcserver-backend/commands"
+	"github.com/xoreo/mcserver-backend/commands"
+	"github.com/xoreo/mcserver-backend/types"
 )
 
 /* ----- START POST ROUTES ----- */
@@ -37,7 +42,19 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(hash)
 
 	// Open the DB now
+	serverDB, err := types.LoadDB() // THE BUG IS ON THIS LINE
+	log.Fatal(err.Error())
 
+	// Search for a server with the given hash
+	server, err := serverDB.GetServerFromHash(hash)
+	log.Fatal(err.Error())
+
+	// Execute the start command
+	output, err := commands.Execute("start", *server)
+	log.Fatal(err.Error())
+
+	// Write to the api server
+	json.NewEncoder(w).Encode(output)
 }
 
 // StopServer is the api function that stops a server.

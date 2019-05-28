@@ -33,6 +33,11 @@ func TestAddServer(t *testing.T) {
 	}
 
 	t.Logf("[ after AddServer ] %s\n", db.String())
+
+	err = db.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestClose(t *testing.T) {

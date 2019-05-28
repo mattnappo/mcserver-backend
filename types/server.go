@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 
@@ -45,7 +46,7 @@ func NewServer(version, name string, port, ram uint32) (*Server, error) {
 	}
 
 	newServer.Hash = common.Sha3(newServer.Bytes())
-
+	fmt.Println(newServer.Hash.String())
 	return newServer, nil
 }
 
