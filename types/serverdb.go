@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -62,6 +63,7 @@ func (db *ServerDB) AddServer(server *Server) error {
 // GetServerFromHash returns the server belonging to the hash given.
 func (db *ServerDB) GetServerFromHash(hash string) (*Server, error) {
 	for _, currentServer := range db.Servers {
+		fmt.Printf("currentServer.Hash.String(): %s\nhash: %s\n", currentServer.Hash.String(), hash)
 		if currentServer.Hash.String() == hash {
 			return &currentServer, nil
 		}

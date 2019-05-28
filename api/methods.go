@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -33,6 +34,7 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 
 	// Extract the server hash from the request
 	hash := mux.Vars(r)["hash"]
+	fmt.Println(hash)
 
 	// Open the DB now
 
