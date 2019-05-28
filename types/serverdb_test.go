@@ -1,6 +1,10 @@
 package types
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/xoreo/mcserver-backend/commands"
+)
 
 func TestLoadDB(t *testing.T) {
 	db, err := LoadDB()
@@ -16,6 +20,11 @@ func TestAddServer(t *testing.T) {
 	var port uint32 = 25565
 	var ram uint32 = 1024
 	server, err := NewServer(version, name, port, ram)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = commands.InitializeServer(server)
 	if err != nil {
 		t.Fatal(err)
 	}

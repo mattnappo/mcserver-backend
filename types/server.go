@@ -17,7 +17,7 @@ type Server struct {
 	RAM         int         `json:"ram"`         // The amount of ram to be allocated to the server
 	Name        string      `json:"name"`        // The name of the server
 	TimeCreated string      `json:"timeCreated"` // The time that the server was created
-	Initialized bool        `json:"created"`     // Whether the server has been initialized or not
+	Initialized bool        `json:"initialized"` // Whether the server has been initialized or not
 	StartScript string      `json:"startScript"` // The path to the start.sh script
 	Hash        common.Hash `json:"hash"`        // The hash of the server
 }
