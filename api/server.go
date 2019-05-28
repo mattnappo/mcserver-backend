@@ -1,18 +1,10 @@
 package api
 
-import (
-	"github.com/gorilla/mux"
-)
+import "net/http"
 
-// API represents the necessary data for the api (a REST server).
-type API struct {
-	Router mux.Router `json:"router"`
-}
+// StartAPIServer starts the` API server.
+func StartAPIServer() {
+	api := NewAPI() // Create a new API
 
-// InitializeRoutes initializes the routes for the API.
-func InitializeRoutes() {
-	router := mux.NewRouter()
-
-	router.HandleFunc("/api/createServer", CreateServer).Methods("POST")
-	router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
+	http.ListenAndServe(":8000", api.Router) // Start an HTTP server
 }

@@ -1,40 +1,28 @@
 package api
 
-// CreateServer is the api function to create a new server.
-func CreateServer() {
+import "github.com/gorilla/mux"
 
+// API represents the necessary data for the api (a REST server).
+type API struct {
+	Router *mux.Router `json:"router"` // The API's mux router
 }
 
-// SendCommand is the api function that sends a command to the server.
-func SendCommand() {
+// NewAPI constructs a new API struct.
+func NewAPI() *API {
+	api := &API{
+		Router: mux.NewRouter(), // Create a new mux router
+	}
 
+	api.SetupRoutes() // Setup the API's routes
+
+	return api
 }
 
-// EditProperties is the api function that edits the server.properties file.
-func EditProperties() {
+// SetupRoutes initializes the necessary routes for the API's router.
+func (api *API) SetupRoutes() {
+	router := api.Router
 
+	// Initialize the routes
+	router.HandleFunc("/api/createServer", CreateServer).Methods("POST")
+	router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
 }
-
-/* ----- START SYSTEMCTL COMMANDS ----- */
-
-// StartServer is the api function that starts a server.
-func StartServer() {
-
-}
-
-// StopServer is the api function that stops a server.
-func StopServer() {
-
-}
-
-// RestartServer is the api function that restarts a server.
-func RestartServer() {
-
-}
-
-// ServerStatus is the api function that gets the status of a server.
-func ServerStatus() {
-
-}
-
-/* ----- END SYSTEMCTL COMMANDS ----- */
