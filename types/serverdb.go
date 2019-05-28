@@ -3,13 +3,12 @@ package types
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"os"
 )
 
 // ServerDBName is the name of the server database.
-const ServerDBName = "servers.json"
+const ServerDBName = "servers.json" // Make this an absolute path
 
 // ServerDB contains the metadata for all of the servers.
 type ServerDB struct {
@@ -32,14 +31,11 @@ func LoadDB() (*ServerDB, error) {
 	}
 
 	// If the file is nil, load the empty array of servers
-	// ---- Start bug ----
 	if len(rawRead) == 0 {
 		return &ServerDB{
 			Servers: []Server{},
 		}, nil
 	}
-	// ---- End bug ----
-	fmt.Print("I AM RUNNING \n\n\n\n")
 
 	// Reconstruct the file
 	buffer := &ServerDB{}
@@ -47,6 +43,7 @@ func LoadDB() (*ServerDB, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return buffer, nil // Return
 }
 
@@ -65,7 +62,7 @@ func (db *ServerDB) AddServer(server *Server) error {
 // GetServerFromHash returns the server belonging to the hash given.
 func (db *ServerDB) GetServerFromHash(hash string) (*Server, error) {
 	for _, currentServer := range db.Servers {
-		fmt.Printf("currentServer.Hash.String(): %s\nhash: %s\n", currentServer.Hash.String(), hash)
+		// fmt.Printf("currentServer.Hash.String(): %s\nhash: %s\n", currentServer.Hash.String(), hash)
 		if currentServer.Hash.String() == hash {
 			return &currentServer, nil
 		}

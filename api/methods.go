@@ -1,13 +1,12 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	// "github.com/xoreo/mcserver-backend/commands"
+
+	"github.com/gorilla/mux"
 	"github.com/xoreo/mcserver-backend/commands"
 	"github.com/xoreo/mcserver-backend/types"
 )
@@ -35,26 +34,26 @@ func EditProperties(w http.ResponseWriter, r *http.Request) {
 
 // StartServer is the api function that starts a server.
 func StartServer(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json") // Set the proper header
+	w.Header().Set("Content-Type", "application/text") // Set the proper header
 
 	// Extract the server hash from the request
 	hashString := mux.Vars(r)["hash"]
 
 	// Open the DB now
-	serverDB, err := types.LoadDB() // THE BUG IS ON THIS LINE
-	log.Fatal(err.Error())
+	serverDB, _ := types.LoadDB() // THE BUG IS ON THIS LINE
+	// log.Fatal(err.Error())
 
 	// Search for a server with the given hash
-	server, err := serverDB.GetServerFromHash(hashString)
-	log.Fatal(err.Error())
+	server, _ := serverDB.GetServerFromHash(hashString)
+	// log.Fatal(err.Error())
 
 	// Execute the start command
-	output, err := commands.Execute("start", *server)
-	log.Fatal(err.Error())
+	output, _ := commands.Execute("start", *server)
+	fmt.Printf("output: %s\n\n", output)
+	// log.Fatal(err.Error())
 
 	// Write to the api server
-	json.NewEncoder(w).Encode(output)
-	fmt.Fprintf(w, "hello")
+	fmt.Fprintf(w, output)
 }
 
 // StopServer is the api function that stops a server.
