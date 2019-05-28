@@ -25,21 +25,19 @@ func NewAPI() *API {
 
 // SetupRoutes initializes the necessary routes for the API's router.
 func (api *API) SetupRoutes() {
-	router := api.Router
-
 	// Initialize the POST routes
-	router.HandleFunc("/api/createServer/", CreateServer).Methods("POST")
-	router.HandleFunc("/api/sendCommand/", SendCommand).Methods("POST")
-	router.HandleFunc("/api/editProperties/", EditProperties).Methods("POST")
+	api.Router.HandleFunc("/api/createServer/", CreateServer).Methods("POST")
+	api.Router.HandleFunc("/api/sendCommand/", SendCommand).Methods("POST")
+	api.Router.HandleFunc("/api/editProperties/", EditProperties).Methods("POST")
 
 	// Initialize the GET routes
-	router.HandleFunc("/api/startServer/{hash}", StartServer).Methods("GET")
-	router.HandleFunc("/api/stopServer/{hash}", StopServer).Methods("GET")
-	router.HandleFunc("/api/restartServer/{hash}", RestartServer).Methods("GET")
-	router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
+	api.Router.HandleFunc("/api/startServer/{hash}", StartServer).Methods("GET")
+	api.Router.HandleFunc("/api/stopServer/{hash}", StopServer).Methods("GET")
+	api.Router.HandleFunc("/api/restartServer/{hash}", RestartServer).Methods("GET")
+	api.Router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
 
 	// A test route
-	router.HandleFunc("/test/",
+	api.Router.HandleFunc("/test/",
 		func(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "the test worked!")
 		}).Methods("GET")

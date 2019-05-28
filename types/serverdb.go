@@ -32,11 +32,14 @@ func LoadDB() (*ServerDB, error) {
 	}
 
 	// If the file is nil, load the empty array of servers
+	// ---- Start bug ----
 	if len(rawRead) == 0 {
 		return &ServerDB{
 			Servers: []Server{},
 		}, nil
 	}
+	// ---- End bug ----
+	fmt.Print("I AM RUNNING \n\n\n\n")
 
 	// Reconstruct the file
 	buffer := &ServerDB{}
@@ -44,7 +47,6 @@ func LoadDB() (*ServerDB, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return buffer, nil // Return
 }
 

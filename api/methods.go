@@ -38,15 +38,14 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json") // Set the proper header
 
 	// Extract the server hash from the request
-	hash := mux.Vars(r)["hash"]
-	fmt.Println(hash)
+	hashString := mux.Vars(r)["hash"]
 
 	// Open the DB now
 	serverDB, err := types.LoadDB() // THE BUG IS ON THIS LINE
 	log.Fatal(err.Error())
 
 	// Search for a server with the given hash
-	server, err := serverDB.GetServerFromHash(hash)
+	server, err := serverDB.GetServerFromHash(hashString)
 	log.Fatal(err.Error())
 
 	// Execute the start command
@@ -55,6 +54,7 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 
 	// Write to the api server
 	json.NewEncoder(w).Encode(output)
+	fmt.Fprintf(w, "hello")
 }
 
 // StopServer is the api function that stops a server.
