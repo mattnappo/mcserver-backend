@@ -2,16 +2,10 @@ package types
 
 import (
 	"encoding/json"
-	"errors"
 	"strings"
 	"time"
 
 	"github.com/xoreo/mcserver-backend/common"
-)
-
-var (
-	// ErrUnsupportedVersion is thrown when an unsupported server version is given.
-	ErrUnsupportedVersion = errors.New("that is not a supported version")
 )
 
 // Server holds the metadata for a local Minecraft server.
@@ -24,6 +18,7 @@ type Server struct {
 	TimeCreated string `json:"timeCreated"` // The time that the server was created
 	Initialized bool   `json:"created"`     // Whether the server has been initialized or not
 	StartScript string `json:"startScript"` // The path to the start.sh script
+	Hash        []byte `json:"hash"`        // The hash of the server
 }
 
 // NewServer constructs a new server struct.
@@ -49,6 +44,8 @@ func NewServer(version, name string, port, ram uint32) (*Server, error) {
 		StartScript: "",
 	}
 
+	newServer.Hash = common.Sha3(newServer.Bytes())
+
 	return newServer, nil
 }
 
@@ -64,6 +61,11 @@ func (server *Server) Bytes() []byte {
 func (server *Server) String() string {
 	json, _ := json.MarshalIndent(*server, "", "  ")
 	return string(json)
+}
+
+// Recalculate recalculates the hash of the server.
+func (server *Server) Recalculate() {
+	server.Hash = common.Sha3(server.Bytes())
 }
 
 /* -- END HELPER METHODS -- */
