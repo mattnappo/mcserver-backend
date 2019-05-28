@@ -1,10 +1,13 @@
 package api
 
-import "net/http"
+import (
+	"net/http"
+	"strconv"
+)
 
 // StartAPIServer starts the` API server.
-func StartAPIServer() {
+func StartAPIServer(port int) {
 	api := NewAPI() // Create a new API
 
-	http.ListenAndServe(":8000", api.Router) // Start an HTTP server
+	http.ListenAndServe(":"+strconv.Itoa(port), api.Router) // Start an HTTP server
 }

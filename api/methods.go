@@ -1,6 +1,13 @@
 package api
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+/* ----- START POST ROUTES ----- */
 
 // CreateServer is the api function to create a new server.
 func CreateServer(w http.ResponseWriter, r *http.Request) {
@@ -17,10 +24,17 @@ func EditProperties(w http.ResponseWriter, r *http.Request) {
 
 }
 
-/* ----- START SYSTEMCTL COMMANDS ----- */
+/* ----- END POST ROUTES ----- */
+
+/* ----- START GET ROUTES ----- */
 
 // StartServer is the api function that starts a server.
 func StartServer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json") // Set the proper header
+
+	vars := mux.Vars(r)
+	hash := vars["hash"]
+	fmt.Println(hash)
 
 }
 
@@ -39,4 +53,4 @@ func ServerStatus(w http.ResponseWriter, r *http.Request) {
 
 }
 
-/* ----- END SYSTEMCTL COMMANDS ----- */
+/* ----- END GET ROUTES ----- */
