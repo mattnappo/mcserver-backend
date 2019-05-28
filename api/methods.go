@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	// "github.com/xoreo/mcserver-backend/commands"
@@ -45,14 +46,16 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 
 	// Search for a server with the given hash
 	server, _ := serverDB.GetServerFromHash(hashString)
+	fmt.Printf("server: %s\n\n", server.String())
 	// log.Fatal(err.Error())
 
 	// Execute the start command
-	output, _ := commands.Execute("start", *server)
+	output, err := commands.Execute("start", *server)
 	fmt.Printf("output: %s\n\n", output)
-	// log.Fatal(err.Error())
+	log.Fatal(err.Error())
 
 	// Write to the api server
+	fmt.Fprintf(w, "test data")
 	fmt.Fprintf(w, output)
 }
 
