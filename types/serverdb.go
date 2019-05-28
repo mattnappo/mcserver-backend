@@ -59,6 +59,17 @@ func (db *ServerDB) AddServer(server *Server) error {
 	return nil
 }
 
+// GetServerFromHash returns the server belonging to the hash given.
+func (db *ServerDB) GetServerFromHash(hash string) (*Server, error) {
+	for _, currentServer := range db.Servers {
+		if currentServer.Hash.String() == hash {
+			return &currentServer, nil
+		}
+	}
+
+	return nil, errors.New("a server with that hash does not exist")
+}
+
 // Close closes and writes changes to the database file
 func (db *ServerDB) Close() error {
 	// Marshall

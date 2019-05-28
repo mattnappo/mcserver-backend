@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -32,9 +31,10 @@ func EditProperties(w http.ResponseWriter, r *http.Request) {
 func StartServer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json") // Set the proper header
 
-	vars := mux.Vars(r)
-	hash := vars["hash"]
-	fmt.Println(hash)
+	// Extract the server hash from the request
+	hash := mux.Vars(r)["hash"]
+
+	// Open the DB now
 
 }
 

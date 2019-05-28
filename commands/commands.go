@@ -127,8 +127,8 @@ func Execute(command string, server types.Server) (string, error) {
 	return string(output), nil
 }
 
-// EnterServer launches a shell of the server console.
-func EnterServer(server *types.Server) {
+// SendCommand sends a command to the server console.
+func SendCommand(server *types.Server) {
 
 }
 
