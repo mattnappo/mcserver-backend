@@ -24,10 +24,7 @@ func TestAddServer(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = commands.InitializeServer(server)
-	if err != nil {
-		t.Fatal(err)
-	}
+	
 
 	db, err := LoadDB()
 	if err != nil {

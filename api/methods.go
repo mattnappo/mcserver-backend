@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,7 +17,14 @@ import (
 
 // CreateServer is the api function to create a new server.
 func CreateServer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/text") // Set the proper header
+	fmt.Printf("formvalue: %s\n\n\n", r.FormValue("a"))
 
+	server, err := types.NewServer("1.7.2", "server test", 25565, 1024)
+	log.Fatal(err.Error())
+
+	err = commands.InitializeServer(server)
+	log.Fatal(err.Error())
 }
 
 // SendCommand is the api function that sends a command to the server.
@@ -55,7 +63,6 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 	log.Fatal(err.Error())
 
 	// Write to the api server
-	fmt.Fprintf(w, "test data")
 	fmt.Fprintf(w, output)
 }
 
@@ -75,3 +82,19 @@ func ServerStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 /* ----- END GET ROUTES ----- */
+
+// POSTRequest is a temp post request JSON format.
+type POSTRequest struct {
+	Val string `json:"val"`
+}
+
+// TestPOST is a a random testing method.
+func TestPOST(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("test\n\n\n\n")
+	var res POSTRequest
+	json.NewDecoder(r.Body).Decode(&res)
+	_ = r.FormValue("val")
+	json.NewEncoder(w).Encode("test")
+	// fmt.Fprintf(w, "sometig")
+	// fmt.Fprintf(w, fmt.Sprintf("[val] %s\n", val))
+}

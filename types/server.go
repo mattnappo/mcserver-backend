@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
 
@@ -45,8 +44,9 @@ func NewServer(version, name string, port, ram uint32) (*Server, error) {
 		StartScript: "",
 	}
 
+	// Compute the hash of the server
 	newServer.Hash = common.Sha3(newServer.Bytes())
-	fmt.Println(newServer.Hash.String())
+
 	return newServer, nil
 }
 

@@ -37,8 +37,12 @@ func (api *API) SetupRoutes() {
 	api.Router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
 
 	// A test route
-	api.Router.HandleFunc("/test/",
+	api.Router.HandleFunc("/testGET/{data}",
 		func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprintf(w, "the test worked!")
+			// data := mux.Vars(r)["data"]
+			fmt.Fprintf(w, "somethin")
+			// fmt.Fprintf(w, fmt.Sprintf("[data] %s\n", data))
 		}).Methods("GET")
+
+	api.Router.HandleFunc("/testPOST/", TestPOST).Methods("POST")
 }
