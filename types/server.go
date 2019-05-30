@@ -18,11 +18,14 @@ type Server struct {
 	TimeCreated string      `json:"timeCreated"` // The time that the server was created
 	Initialized bool        `json:"initialized"` // Whether the server has been initialized or not
 	StartScript string      `json:"startScript"` // The path to the start.sh script
+	Properties  *Properties `json:"properties"`  // The contents of the server.properties file
 	Hash        common.Hash `json:"hash"`        // The hash of the server
 }
 
 // NewServer constructs a new server struct.
-func NewServer(version, name string, port, ram uint32) (*Server, error) {
+func NewServer(version, name string, port, ram int) (*Server, error) {
+	oldName := name
+
 	// Replace spaces with '-' in server name
 	name = strings.Replace(name, " ", "-", -1)
 
@@ -42,6 +45,7 @@ func NewServer(version, name string, port, ram uint32) (*Server, error) {
 		TimeCreated: time.Now().String(),
 		Initialized: false,
 		StartScript: "",
+		Properties:  DefaultProperties(int(port), oldName+" on "+string(port)),
 	}
 
 	// Compute the hash of the server

@@ -15,7 +15,7 @@ func getTestServer() (*types.Server, error) {
 	max := 26000
 	random := rand.Intn(max-min) + min
 
-	server, err := types.NewServer("1.7.2", "server-"+strconv.Itoa(random), uint32(random), 1024)
+	server, err := types.NewServer("1.7.2", "server-"+strconv.Itoa(random), random, 1024)
 	if err != nil {
 		return nil, err
 	}

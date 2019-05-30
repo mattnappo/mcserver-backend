@@ -36,7 +36,7 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create the new server
-	server, err := types.NewServer(requestData.Version, requestData.Name, uint32(port), uint32(ram))
+	server, err := types.NewServer(requestData.Version, requestData.Name, port, ram)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

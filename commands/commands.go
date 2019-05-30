@@ -132,8 +132,3 @@ func Execute(command string, server types.Server) (string, error) {
 func SendCommand(server *types.Server) {
 
 }
-
-// EditProperties is used to edit a server property (such as max build height or default gamemode).
-func EditProperties(server types.Server, property, newValue string) error {
-	return nil
-}
