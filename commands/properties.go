@@ -85,16 +85,11 @@ func DefaultProperties(port int, motd string) *Properties {
 	return defaultProperties
 }
 
-// ChangeProperty changes a single property in a Properties struct pointer.
-func (properties *Properties) ChangeProperty(property, newValue string) {
-
-}
-
-// NewPropertiesFile puts the properties from a Properties struct into
+// GetFile puts the properties from a Properties struct into
 // the format to be written to a file.
-func NewPropertiesFile(p Properties) string {
+func (p *Properties) GetFile() string {
 
-	properties := `#Minecraft server properties
+	data := `#Minecraft server properties
 generator-settings=` + p.GeneratorSettings + `
 op-permission-level=` + p.OpPermissionLevel + `
 allow-nether=` + p.OpPermissionLevel + `
@@ -131,5 +126,10 @@ view-distance=` + p.ViewDistance + `
 generate-structures=` + p.GenerateStructures + `
 motd=` + p.Motd
 
-	return properties
+	return data
+}
+
+// ChangeProperty changes a single property in a Properties struct pointer.
+func (p *Properties) ChangeProperty(property, newValue string) {
+
 }
