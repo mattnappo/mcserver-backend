@@ -8,9 +8,13 @@ type GETResponse struct {
 // NewGETResponse constructs a new GETResponse struct.
 func NewGETResponse(data string) GETResponse {
 	output := data
+
+	// If the output is nil, tell the user
 	if output == "" {
 		output = "error getting output"
 	}
+
+	// Return the new response
 	return GETResponse{
 		Output: output,
 	}

@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	// "github.com/xoreo/mcserver-backend/commands"
-
 	"github.com/gorilla/mux"
 	"github.com/xoreo/mcserver-backend/commands"
 	"github.com/xoreo/mcserver-backend/types"
@@ -88,8 +86,11 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 
-	// Write to the api server
-	json.NewEncoder(w).Encode(output)
+	// Prepare the response
+	res := NewGETResponse(output)
+
+	// Write the response to the server
+	json.NewEncoder(w).Encode(res)
 }
 
 // StopServer is the api function that stops a server.
@@ -108,16 +109,3 @@ func ServerStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 /* ----- END GET ROUTES ----- */
-
-// // TestPOST is a a random testing method.
-// func TestPOST(w http.ResponseWriter, r *http.Request) {
-// 	var res POSTRequest
-// 	json.NewDecoder(r.Body).Decode(&res)
-
-// 	// val := r.FormValue("val")
-
-// 	// json.NewEncoder(w).Encode("test")
-// 	// fmt.Fprintf(w, "sometig")
-
-// 	fmt.Fprintf(w, fmt.Sprintf("[val] %s\n", res.Val))
-// }
