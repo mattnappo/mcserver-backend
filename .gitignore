@@ -6,6 +6,7 @@ dl/
 servers/
 types/servers.json
 servers.json
+vendor/
 
 
 # Binaries for programs and plugins
