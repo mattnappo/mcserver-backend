@@ -15,3 +15,15 @@ func TestGetFile(t *testing.T) {
 
 	t.Log(data)
 }
+
+func TestChangeProperty(t *testing.T) {
+	properties := DefaultProperties(7071, "cool test server!")
+
+	data := properties.GetFile()
+	t.Log(data)
+
+	properties.ChangeProperty("LevelType", "new value")
+
+	data = properties.GetFile()
+	t.Log(data)
+}

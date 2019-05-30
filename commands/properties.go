@@ -1,6 +1,9 @@
 package commands
 
-import "strconv"
+import (
+	"errors"
+	"strconv"
+)
 
 // Properties contains the data to edit the server.properties file.
 type Properties struct {
@@ -130,6 +133,81 @@ motd=` + p.Motd
 }
 
 // ChangeProperty changes a single property in a Properties struct pointer.
-func (p *Properties) ChangeProperty(property, newValue string) {
+func (p *Properties) ChangeProperty(property, newValue string) error {
+	switch property {
+	case "GeneratorSettings":
+		p.GeneratorSettings = newValue
+	case "OpPermissionLevel":
+		p.OpPermissionLevel = newValue
+	case "AllowNether":
+		p.AllowNether = newValue
+	case "LevelName":
+		p.LevelName = newValue
+	case "EnableQuery":
+		p.EnableQuery = newValue
+	case "AllowFlight":
+		p.AllowFlight = newValue
+	case "PreventProxyConnections":
+		p.PreventProxyConnections = newValue
+	case "ServerPort":
+		p.ServerPort = newValue
+	case "MaxWorldSize":
+		p.MaxWorldSize = newValue
+	case "LevelType":
+		p.LevelType = newValue
+	case "EnableRcon":
+		p.EnableRcon = newValue
+	case "ForceGamemode":
+		p.ForceGamemode = newValue
+	case "LevelSeed":
+		p.LevelSeed = newValue
+	case "ServerIP":
+		p.ServerIP = newValue
+	case "NetworkCompressionThreshold":
+		p.NetworkCompressionThreshold = newValue
+	case "MaxBuildHeight":
+		p.MaxBuildHeight = newValue
+	case "SpawnNPCs":
+		p.SpawnNPCs = newValue
+	case "WhiteList":
+		p.WhiteList = newValue
+	case "SpawnAnimals":
+		p.SpawnAnimals = newValue
+	case "Hardcore":
+		p.Hardcore = newValue
+	case "SnooperEnabled":
+		p.SnooperEnabled = newValue
+	case "ResourcePackSha1":
+		p.ResourcePackSha1 = newValue
+	case "OnlineMode":
+		p.OnlineMode = newValue
+	case "ResourcePack":
+		p.ResourcePack = newValue
+	case "PVP":
+		p.PVP = newValue
+	case "Difficulty":
+		p.Difficulty = newValue
+	case "EnableCommandBlock":
+		p.EnableCommandBlock = newValue
+	case "Gamemode":
+		p.Gamemode = newValue
+	case "PlayerIdleTimeout":
+		p.PlayerIdleTimeout = newValue
+	case "MaxPlayers":
+		p.MaxPlayers = newValue
+	case "MaxTickTime":
+		p.MaxTickTime = newValue
+	case "SpawnMonsters":
+		p.SpawnMonsters = newValue
+	case "ViewDistance":
+		p.ViewDistance = newValue
+	case "GenerateStructures":
+		p.GenerateStructures = newValue
+	case "Motd":
+		p.Motd = newValue
+	default:
+		return errors.New("that is not a valid property")
+	}
 
+	return nil
 }
