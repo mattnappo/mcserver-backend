@@ -1,6 +1,6 @@
 package api
 
-// CreateServerRequest is the format for a POST request to CreateServer.
+// CreateServerRequest is the structure for a POST request to the CreateServer method.
 type CreateServerRequest struct {
 	Version string `json:"version"`
 	Name    string `json:"name"`

@@ -1,10 +1,6 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
-	"net/http"
-
 	"github.com/gorilla/mux"
 )
 
@@ -20,7 +16,6 @@ func NewAPI() *API {
 	}
 
 	api.SetupRoutes() // Setup the API's routes
-
 	return api
 }
 
@@ -36,18 +31,4 @@ func (api *API) SetupRoutes() {
 	api.Router.HandleFunc("/api/stopServer/{hash}", StopServer).Methods("GET")
 	api.Router.HandleFunc("/api/restartServer/{hash}", RestartServer).Methods("GET")
 	api.Router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
-
-	// A test route
-	api.Router.HandleFunc("/testGET/{data}",
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json") // Set the proper header
-			data := mux.Vars(r)["data"]
-
-			formatted := fmt.Sprintf("[data] %s\n", data)
-			// fmt.Fprintf(w, "somethin")
-			json.NewEncoder(w).Encode(formatted)
-			// fmt.Fprintf(w, )
-		}).Methods("GET")
-
-	// api.Router.HandleFunc("/testPOST/", TestPOST).Methods("POST")
 }

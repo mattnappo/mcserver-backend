@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-// StartAPIServer starts the` API server.
+// StartAPIServer starts the API server.
 func StartAPIServer(port int) {
 	api := NewAPI() // Create a new API
 
