@@ -122,7 +122,7 @@ func Execute(command string, server types.Server) (string, error) {
 
 	// Return the output as a string
 	finalOutput := string(output)
-	if output == nil {
+	if finalOutput == "" {
 		finalOutput = "no output (internal)"
 	}
 	return finalOutput, nil
