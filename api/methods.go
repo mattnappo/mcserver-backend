@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+
 	"github.com/xoreo/mcserver-backend/commands"
 	"github.com/xoreo/mcserver-backend/types"
 )
@@ -83,7 +84,7 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 	// Extract the server hash from the request
 	hashString := mux.Vars(r)["hash"]
 
-	// Open the DB now
+	// Open the DB
 	serverDB, err := types.LoadDB()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -100,6 +101,8 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	fmt.Printf("[output] %s\n", output)
 
 	// Prepare the response
 	res := NewGETResponse(output)
