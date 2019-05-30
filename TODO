@@ -1,5 +1,10 @@
 TODO
 ==========
+
+important:
+errors written back to the client
+
+less important:
 Add logging
 main.go
 readme
