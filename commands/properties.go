@@ -142,6 +142,5 @@ func (p *Properties) ChangeProperty(property, newValue string) error {
 	}
 
 	field.SetString(newValue) // Set value
-
 	return nil
 }

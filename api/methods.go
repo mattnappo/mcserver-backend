@@ -69,8 +69,40 @@ func SendCommand(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// EditProperties is the api function that edits the server.properties file.
-func EditProperties(w http.ResponseWriter, r *http.Request) {
+// ChangeProperty is the api function that changes a property in a server
+func ChangeProperty(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json") // Set the proper header
+
+	// Decode the post request
+	var requestData ChangePropertyRequest
+	json.NewDecoder(r.Body).Decode(&requestData)
+
+	hash := requestData.Hash // Extract the hash from the request
+	if hash == "" {
+		log.Fatal("hash cannot be nil")
+	}
+
+	// Add the newly-created server to the database
+	serverDB, err := types.LoadDB()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	// Search for a server with the given hash
+	server, err := serverDB.GetServerFromHash(hash)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	oldServer := server
+
+	err = server.Properties.ChangeProperty(requestData.Property, requestData.NewValue)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	serverDB.UpdateServer(oldServer, server)
+
+	fmt.Println(server.Properties.GetFile())
 
 }
 
@@ -111,6 +143,8 @@ func Execute(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	serverDB.Close() // Close the DB
 
 	// Execute the command
 	output, err := commands.Execute(method, *server)

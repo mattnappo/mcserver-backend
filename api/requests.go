@@ -10,6 +10,7 @@ type CreateServerRequest struct {
 
 // ChangePropertyRequest is the structure for a POST request to the ChangeProperty method.
 type ChangePropertyRequest struct {
-	Method   string `json:"method"`
+	Hash     string `json:"hash"`
+	Property string `json:"property"`
 	NewValue string `json:"newValue"`
 }

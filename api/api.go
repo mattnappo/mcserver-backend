@@ -24,7 +24,7 @@ func (api *API) SetupRoutes() {
 	// Initialize the POST routes
 	api.Router.HandleFunc("/api/createServer/", CreateServer).Methods("POST")
 	api.Router.HandleFunc("/api/sendCommand/", SendCommand).Methods("POST")
-	api.Router.HandleFunc("/api/editProperties/", EditProperties).Methods("POST")
+	api.Router.HandleFunc("/api/changeProperty/", ChangeProperty).Methods("POST")
 
 	// Initialize the GET routes
 	api.Router.HandleFunc("/api/execute/{method}/{hash}", Execute).Methods("GET")

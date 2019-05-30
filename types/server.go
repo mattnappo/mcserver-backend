@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"strconv"
 	"strings"
 	"time"
 
@@ -45,7 +46,7 @@ func NewServer(version, name string, port, ram int) (*Server, error) {
 		TimeCreated: time.Now().String(),
 		Initialized: false,
 		StartScript: "",
-		Properties:  DefaultProperties(int(port), oldName+" on "+string(port)),
+		Properties:  DefaultProperties(int(port), oldName+" on "+strconv.Itoa(port)),
 	}
 
 	// Compute the hash of the server
