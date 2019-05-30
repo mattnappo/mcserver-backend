@@ -25,20 +25,30 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&requestData)
 
 	fmt.Printf("\n\n%s\n%s\n%s\n%s\n\n\n", requestData.Version, requestData.Name, requestData.Port, requestData.RAM)
+
 	// Extract the data from the request
-	port, err := strconv.Atoi(requestData.Port)
-	log.Fatal(err.Error())
+	// port, err := strconv.Atoi(requestData.Port)
+	port, err := strconv.Atoi("23")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	ram, err := strconv.Atoi(requestData.RAM)
-	log.Fatal(err.Error())
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	// Create the new server
 	server, err := types.NewServer(requestData.Version, requestData.Name, uint32(port), uint32(ram))
-	log.Fatal(err.Error())
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	// Initialize the server
 	err = commands.InitializeServer(server)
-	log.Fatal(err.Error())
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	json.NewEncoder(w).Encode(*server)
 	fmt.Println("this worked!!!")
@@ -99,16 +109,3 @@ func ServerStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 /* ----- END GET ROUTES ----- */
-
-// // TestPOST is a a random testing method.
-// func TestPOST(w http.ResponseWriter, r *http.Request) {
-// 	var res POSTRequest
-// 	json.NewDecoder(r.Body).Decode(&res)
-
-// 	// val := r.FormValue("val")
-
-// 	// json.NewEncoder(w).Encode("test")
-// 	// fmt.Fprintf(w, "sometig")
-
-// 	fmt.Fprintf(w, fmt.Sprintf("[val] %s\n", res.Val))
-// }

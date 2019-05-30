@@ -23,14 +23,14 @@ type Server struct {
 
 // NewServer constructs a new server struct.
 func NewServer(version, name string, port, ram uint32) (*Server, error) {
+	// Replace spaces with '-' in server name
+	name = strings.Replace(name, " ", "-", -1)
+
 	// Determine the path for the server
 	path, err := common.NewServerPath(name)
 	if err != nil {
 		return nil, err
 	}
-
-	// Replace spaces with '-' in server name
-	name = strings.Replace(name, " ", "-", -1)
 
 	// Create the new server
 	newServer := &Server{

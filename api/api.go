@@ -4,41 +4,27 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
 
-// API represents the necessary data for the api (a REST server).
-type API struct {
-	Router *mux.Router `json:"router"` // The API's mux router
-}
-
-// NewAPI constructs a new API struct.
-func NewAPI() *API {
-	api := &API{
-		Router: mux.NewRouter(), // Create a new mux router
-	}
-
-	api.SetupRoutes() // Setup the API's routes
-
-	return api
-}
-
-// SetupRoutes initializes the necessary routes for the API's router.
-func (api *API) SetupRoutes() {
+// Server initializes the necessary routes for the API's router.
+func Server(port int) {
+	router := mux.NewRouter()
 	// Initialize the POST routes
-	api.Router.HandleFunc("/api/createServer/", CreateServer).Methods("POST")
-	api.Router.HandleFunc("/api/sendCommand/", SendCommand).Methods("POST")
-	api.Router.HandleFunc("/api/editProperties/", EditProperties).Methods("POST")
+	router.HandleFunc("/api/createServer/", CreateServer).Methods("POST")
+	router.HandleFunc("/api/sendCommand/", SendCommand).Methods("POST")
+	router.HandleFunc("/api/editProperties/", EditProperties).Methods("POST")
 
 	// Initialize the GET routes
-	api.Router.HandleFunc("/api/startServer/{hash}", StartServer).Methods("GET")
-	api.Router.HandleFunc("/api/stopServer/{hash}", StopServer).Methods("GET")
-	api.Router.HandleFunc("/api/restartServer/{hash}", RestartServer).Methods("GET")
-	api.Router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
+	router.HandleFunc("/api/startServer/{hash}", StartServer).Methods("GET")
+	router.HandleFunc("/api/stopServer/{hash}", StopServer).Methods("GET")
+	router.HandleFunc("/api/restartServer/{hash}", RestartServer).Methods("GET")
+	router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
 
 	// A test route
-	api.Router.HandleFunc("/testGET/{data}",
+	router.HandleFunc("/testGET/{data}",
 		func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json") // Set the proper header
 			data := mux.Vars(r)["data"]
@@ -49,5 +35,5 @@ func (api *API) SetupRoutes() {
 			// fmt.Fprintf(w, )
 		}).Methods("GET")
 
-	// api.Router.HandleFunc("/testPOST/", TestPOST).Methods("POST")
+	http.ListenAndServe(":"+strconv.Itoa(port), router) // Start an HTTP server
 }
