@@ -1,5 +1,7 @@
 package commands
 
+import "strconv"
+
 // Properties contains the data to edit the server.properties file.
 type Properties struct {
 	GeneratorSettings           string
@@ -39,7 +41,57 @@ type Properties struct {
 	Motd                        string
 }
 
-// NewPropertiesFile puts the properties
+// DefaultProperties creates a new Properties struct with the default Minecraft properties
+// execpt for server port and motd.
+func DefaultProperties(port int, motd string) *Properties {
+	defaultProperties := &Properties{
+		GeneratorSettings:           "",
+		OpPermissionLevel:           "4",
+		AllowNether:                 "true",
+		LevelName:                   "world",
+		EnableQuery:                 "false",
+		AllowFlight:                 "false",
+		PreventProxyConnections:     "false",
+		ServerPort:                  strconv.Itoa(port),
+		MaxWorldSize:                "29999984",
+		LevelType:                   "DEFAULT",
+		EnableRcon:                  "false",
+		ForceGamemode:               "false",
+		LevelSeed:                   "",
+		ServerIP:                    "",
+		NetworkCompressionThreshold: "256",
+		MaxBuildHeight:              "256",
+		SpawnNPCs:                   "true",
+		WhiteList:                   "false",
+		SpawnAnimals:                "true",
+		Hardcore:                    "false",
+		SnooperEnabled:              "true",
+		ResourcePackSha1:            "",
+		OnlineMode:                  "true",
+		ResourcePack:                "",
+		PVP:                         "true",
+		Difficulty:                  "1",
+		EnableCommandBlock:          "false",
+		Gamemode:                    "0",
+		PlayerIdleTimeout:           "0",
+		MaxPlayers:                  "20",
+		MaxTickTime:                 "60000",
+		SpawnMonsters:               "true",
+		ViewDistance:                "10",
+		GenerateStructures:          "true",
+		Motd:                        motd,
+	}
+
+	return defaultProperties
+}
+
+// ChangeProperty changes a single property in a Properties struct pointer.
+func (properties *Properties) ChangeProperty(property, newValue string) {
+
+}
+
+// NewPropertiesFile puts the properties from a Properties struct into
+// the format to be written to a file.
 func NewPropertiesFile(p Properties) string {
 
 	properties := `#Minecraft server properties
