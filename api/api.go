@@ -34,8 +34,5 @@ func (api *API) SetupRoutes() {
 		where method is either start, stop, restart, or status
 	*/
 
-	api.Router.HandleFunc("/api/startServer/{hash}", StartServer).Methods("GET")
-	api.Router.HandleFunc("/api/stopServer/{hash}", StopServer).Methods("GET")
-	api.Router.HandleFunc("/api/restartServer/{hash}", RestartServer).Methods("GET")
-	api.Router.HandleFunc("/api/serverStatus/{hash}", ServerStatus).Methods("GET")
+	api.Router.HandleFunc("/api/execute/{method}/{hash}", Execute).Methods("GET")
 }
