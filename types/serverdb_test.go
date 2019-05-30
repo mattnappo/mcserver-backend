@@ -1,6 +1,8 @@
 package types
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestLoadDB(t *testing.T) {
 	db, err := LoadDB()

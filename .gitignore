@@ -5,6 +5,7 @@ dl/
 .DS_STORE
 servers/
 types/servers.json
+servers.json
 
 
 # Binaries for programs and plugins

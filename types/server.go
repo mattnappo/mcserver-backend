@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"time"
 
@@ -17,21 +16,21 @@ type Server struct {
 	RAM         int         `json:"ram"`         // The amount of ram to be allocated to the server
 	Name        string      `json:"name"`        // The name of the server
 	TimeCreated string      `json:"timeCreated"` // The time that the server was created
-	Initialized bool        `json:"created"`     // Whether the server has been initialized or not
+	Initialized bool        `json:"initialized"` // Whether the server has been initialized or not
 	StartScript string      `json:"startScript"` // The path to the start.sh script
 	Hash        common.Hash `json:"hash"`        // The hash of the server
 }
 
 // NewServer constructs a new server struct.
 func NewServer(version, name string, port, ram uint32) (*Server, error) {
+	// Replace spaces with '-' in server name
+	name = strings.Replace(name, " ", "-", -1)
+
 	// Determine the path for the server
 	path, err := common.NewServerPath(name)
 	if err != nil {
 		return nil, err
 	}
-
-	// Replace spaces with '-' in server name
-	name = strings.Replace(name, " ", "-", -1)
 
 	// Create the new server
 	newServer := &Server{
@@ -45,8 +44,9 @@ func NewServer(version, name string, port, ram uint32) (*Server, error) {
 		StartScript: "",
 	}
 
+	// Compute the hash of the server
 	newServer.Hash = common.Sha3(newServer.Bytes())
-	fmt.Println(newServer.Hash.String())
+
 	return newServer, nil
 }
 
