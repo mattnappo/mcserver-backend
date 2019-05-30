@@ -1,4 +1,6 @@
-BUGS
+TODO
 ==========
-no duplicate / overwriting servers
+Add logging
+main.go
+readme
 cleanup prebuilt server, no MACOS stuff
