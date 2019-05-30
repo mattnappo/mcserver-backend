@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -39,10 +40,14 @@ func (api *API) SetupRoutes() {
 	// A test route
 	api.Router.HandleFunc("/testGET/{data}",
 		func(w http.ResponseWriter, r *http.Request) {
-			// data := mux.Vars(r)["data"]
-			fmt.Fprintf(w, "somethin")
-			// fmt.Fprintf(w, fmt.Sprintf("[data] %s\n", data))
+			w.Header().Set("Content-Type", "application/json") // Set the proper header
+			data := mux.Vars(r)["data"]
+
+			formatted := fmt.Sprintf("[data] %s\n", data)
+			// fmt.Fprintf(w, "somethin")
+			json.NewEncoder(w).Encode(formatted)
+			// fmt.Fprintf(w, )
 		}).Methods("GET")
 
-	api.Router.HandleFunc("/testPOST/", TestPOST).Methods("POST")
+	// api.Router.HandleFunc("/testPOST/", TestPOST).Methods("POST")
 }

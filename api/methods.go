@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	// "github.com/xoreo/mcserver-backend/commands"
 
@@ -17,14 +18,30 @@ import (
 
 // CreateServer is the api function to create a new server.
 func CreateServer(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/text") // Set the proper header
-	fmt.Printf("formvalue: %s\n\n\n", r.FormValue("a"))
+	w.Header().Set("Content-Type", "application/json") // Set the proper header
 
-	server, err := types.NewServer("1.7.2", "server test", 25565, 1024)
+	// Decode the post request
+	var requestData CreateServerRequest
+	json.NewDecoder(r.Body).Decode(&requestData)
+
+	fmt.Printf("\n\n%s\n%s\n%s\n%s\n\n\n", requestData.Version, requestData.Name, requestData.Port, requestData.RAM)
+	// Extract the data from the request
+	port, err := strconv.Atoi(requestData.Port)
 	log.Fatal(err.Error())
 
+	ram, err := strconv.Atoi(requestData.RAM)
+	log.Fatal(err.Error())
+
+	// Create the new server
+	server, err := types.NewServer(requestData.Version, requestData.Name, uint32(port), uint32(ram))
+	log.Fatal(err.Error())
+
+	// Initialize the server
 	err = commands.InitializeServer(server)
 	log.Fatal(err.Error())
+
+	json.NewEncoder(w).Encode(*server)
+	fmt.Println("this worked!!!")
 }
 
 // SendCommand is the api function that sends a command to the server.
@@ -83,18 +100,15 @@ func ServerStatus(w http.ResponseWriter, r *http.Request) {
 
 /* ----- END GET ROUTES ----- */
 
-// POSTRequest is a temp post request JSON format.
-type POSTRequest struct {
-	Val string `json:"val"`
-}
+// // TestPOST is a a random testing method.
+// func TestPOST(w http.ResponseWriter, r *http.Request) {
+// 	var res POSTRequest
+// 	json.NewDecoder(r.Body).Decode(&res)
 
-// TestPOST is a a random testing method.
-func TestPOST(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("test\n\n\n\n")
-	var res POSTRequest
-	json.NewDecoder(r.Body).Decode(&res)
-	_ = r.FormValue("val")
-	json.NewEncoder(w).Encode("test")
-	// fmt.Fprintf(w, "sometig")
-	// fmt.Fprintf(w, fmt.Sprintf("[val] %s\n", val))
-}
+// 	// val := r.FormValue("val")
+
+// 	// json.NewEncoder(w).Encode("test")
+// 	// fmt.Fprintf(w, "sometig")
+
+// 	fmt.Fprintf(w, fmt.Sprintf("[val] %s\n", res.Val))
+// }
