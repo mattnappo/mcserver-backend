@@ -2,7 +2,6 @@ package commands
 
 import (
 	"errors"
-	// "fmt"
 	"io/ioutil"
 	"os/exec"
 	"path/filepath"
@@ -124,7 +123,11 @@ func Execute(command string, server types.Server) (string, error) {
 		return "", err
 	}
 
-	return string(output), nil
+	finalOutput := string(output)
+	if output == nil {
+		finalOutput = "no output (internal)"
+	}
+	return finalOutput, nil
 }
 
 // SendCommand sends a command to the server console.

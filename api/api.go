@@ -27,6 +27,13 @@ func (api *API) SetupRoutes() {
 	api.Router.HandleFunc("/api/editProperties/", EditProperties).Methods("POST")
 
 	// Initialize the GET routes
+
+	/*
+		NEW GET MODEL:
+		api.Router.HandleFunc("/api/execute/{method}/{hash}", Execute).Methods("GET")
+		where method is either start, stop, restart, or status
+	*/
+
 	api.Router.HandleFunc("/api/startServer/{hash}", StartServer).Methods("GET")
 	api.Router.HandleFunc("/api/stopServer/{hash}", StopServer).Methods("GET")
 	api.Router.HandleFunc("/api/restartServer/{hash}", RestartServer).Methods("GET")
