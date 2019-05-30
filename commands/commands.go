@@ -118,11 +118,9 @@ func Execute(command string, server types.Server) (string, error) {
 	cmd := exec.Command("/bin/systemctl", command, server.Name)
 
 	// Get the output
-	output, err := cmd.Output()
-	if err != nil {
-		return "", err
-	}
+	output, _ := cmd.Output()
 
+	// Return the output as a string
 	finalOutput := string(output)
 	if output == nil {
 		finalOutput = "no output (internal)"

@@ -89,9 +89,9 @@ func Execute(w http.ResponseWriter, r *http.Request) {
 		break
 	case "stop":
 		break
-	case "restart":
-		break
 	case "status":
+		break
+	case "restart":
 		break
 	default:
 		log.Fatal(errors.New("that is not a valid method"))
