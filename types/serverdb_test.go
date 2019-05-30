@@ -2,8 +2,6 @@ package types
 
 import (
 	"testing"
-
-	"github.com/xoreo/mcserver-backend/commands"
 )
 
 func TestLoadDB(t *testing.T) {
