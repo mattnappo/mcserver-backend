@@ -59,6 +59,27 @@ func (db *ServerDB) AddServer(server *Server) error {
 	return nil
 }
 
+// UpdateServer updates a server in the database.
+func (db *ServerDB) UpdateServer(oldServer, newServer *Server) error {
+	// Check that the server exists
+	exists := false
+	for _, currentServer := range db.Servers {
+		if currentServer.String() == oldServer.String() {
+			exists = true
+			break
+		}
+	}
+
+	// If the server does not exist, throw an error
+	if !exists {
+		return errors.New("that server is not in the database")
+	}
+
+	db.AddServer(newServer)
+
+	return nil
+}
+
 // GetServerFromHash returns the server belonging to the hash given.
 func (db *ServerDB) GetServerFromHash(hash string) (*Server, error) {
 	for _, currentServer := range db.Servers {
