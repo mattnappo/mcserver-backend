@@ -6,6 +6,7 @@ errors written back to the client
 
 less important:
 Add logging
+no overlapping ports
 main.go
 readme
 cleanup prebuilt server, no MACOS stuff
