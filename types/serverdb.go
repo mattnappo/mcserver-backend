@@ -64,7 +64,7 @@ func (db *ServerDB) UpdateServer(oldServer, newServer *Server) error {
 	// Check that the server exists
 	exists := false
 	for _, currentServer := range db.Servers {
-		if currentServer.String() == oldServer.String() {
+		if currentServer.Hash.String() == oldServer.Hash.String() {
 			exists = true
 			break
 		}
@@ -75,6 +75,17 @@ func (db *ServerDB) UpdateServer(oldServer, newServer *Server) error {
 		return errors.New("that server is not in the database")
 	}
 
+	// Remove the old server
+	for i, server := range db.Servers {
+		if server.Hash.String() == oldServer.Hash.String() {
+			db.Servers[i] = Server{}
+			break
+		}
+	}
+
+	newServer.Recalculate() // Recalculate the hash
+
+	// Add the new server
 	db.AddServer(newServer)
 
 	return nil

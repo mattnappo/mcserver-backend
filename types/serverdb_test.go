@@ -69,3 +69,41 @@ func TestClose(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestUpdateSever(t *testing.T) {
+	testServer, err := NewServer("1.12", "test", 9999, 1024)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(testServer.String())
+
+	db, err := LoadDB()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = db.AddServer(testServer)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	db.Close()
+
+	db, err = LoadDB()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newServer := testServer
+	newServer.Name = "new-name"
+
+	err = db.UpdateServer(testServer, newServer)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(newServer.String())
+
+	db.Close()
+}
