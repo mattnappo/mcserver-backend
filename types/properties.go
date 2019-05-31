@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+	"io/ioutil"
+	"path/filepath"
 	"reflect"
 	"strconv"
 )
@@ -143,5 +145,22 @@ func (p *Properties) ChangeProperty(property, newValue string) error {
 
 	field.SetString(newValue) // Set value
 
+	return nil
+}
+
+// WriteToServer writes the properties file to a server's.
+func (p *Properties) WriteToServer(server *Server) error {
+	// Get the file path
+	path := filepath.Join(server.Path, "server.properties")
+	path, err := filepath.Abs(path)
+	if err != nil {
+		return err
+	}
+
+	// Write to file
+	err = ioutil.WriteFile(path, []byte(p.GetFile()), 0644)
+	if err != nil {
+		return err
+	}
 	return nil
 }

@@ -95,15 +95,33 @@ func ChangeProperty(w http.ResponseWriter, r *http.Request) {
 	}
 	oldServer := server
 
+	// Change the property in server to be the new server
 	err = server.Properties.ChangeProperty(requestData.Property, requestData.NewValue)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	serverDB.UpdateServer(oldServer, server)
+	fmt.Println()
 
-	fmt.Println(server.Properties.GetFile())
+	// Update the server in the database
+	err = serverDB.UpdateServer(oldServer, server)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
+	serverDB.Close() // Save changes to the DB and close
+
+	// fmt.Println(server.Properties.GetFile())
+	err = server.Properties.WriteToServer(server)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	// Send the response (the new server)
+	res := NewDefaultResponse(server.String())
+
+	fmt.Printf("\n\n\n%s\n\n\n", server.String())
+	json.NewEncoder(w).Encode(res)
 }
 
 /* ----- END POST ROUTES ----- */
