@@ -119,8 +119,6 @@ func ChangeProperty(w http.ResponseWriter, r *http.Request) {
 
 	// Send the response (the new server)
 	res := NewDefaultResponse(server.String())
-
-	fmt.Printf("\n\n\n%s\n\n\n", server.String())
 	json.NewEncoder(w).Encode(res)
 }
 

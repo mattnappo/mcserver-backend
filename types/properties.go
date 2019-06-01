@@ -151,7 +151,7 @@ func (p *Properties) ChangeProperty(property, newValue string) error {
 // WriteToServer writes the properties file to a server's.
 func (p *Properties) WriteToServer(server *Server) error {
 	// Get the file path
-	path := filepath.Join(server.Path, "server.properties")
+	path := filepath.Join(server.Path, server.Version, "server.properties")
 	path, err := filepath.Abs(path)
 	if err != nil {
 		return err
