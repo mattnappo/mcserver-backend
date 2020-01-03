@@ -7,6 +7,7 @@ servers/
 types/servers.json
 servers.json
 vendor/
+data/
 
 
 # Binaries for programs and plugins

@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
+
+	"github.com/SummerCash/ursa/common"
 )
 
 // ServerDBName is the name of the server database.
-const ServerDBName = "servers.json" // Make this an absolute path
+var ServerDBName = path.Join(common.DataDir, "servers.json")
 
 // ServerDB contains the metadata for all of the servers.
 type ServerDB struct {
@@ -18,6 +21,11 @@ type ServerDB struct {
 
 // LoadDB returns the contents of a ServerDB file.
 func LoadDB() (*ServerDB, error) {
+	err := common.CreateDirIfDoesNotExit(common.DataDir)
+	if err != nil {
+		return nil, err
+	}
+
 	// Create the file (if it does not already exist)
 	file, err := os.OpenFile(ServerDBName, os.O_RDONLY|os.O_CREATE, 0644)
 	if err != nil {
@@ -51,8 +59,14 @@ func LoadDB() (*ServerDB, error) {
 // AddServer adds a server to the database
 func (db *ServerDB) AddServer(server *Server) error {
 	for _, currentServer := range db.Servers {
+		// Check for unique name
 		if currentServer.Name == server.Name {
 			return errors.New("that server name is already in use")
+		}
+
+		// Check unique port
+		if currentServer.Port == server.Port {
+			return errors.New("a server with that port already exists")
 		}
 	}
 
@@ -101,7 +115,7 @@ func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
 
 	for _, currentServer := range db.Servers {
 		fmt.Printf("currentServerHash: %s\n            hash: %s\n", currentServer.Hash.String(), hash)
-		if currentServer.Hash.String() != hash {
+		if !serverMatch(currentServer, hash) {
 			newServers = append(newServers, currentServer)
 		} else {
 			oldCopy = &currentServer
@@ -122,7 +136,7 @@ func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
 func (db *ServerDB) GetServerFromHash(hash string) (*Server, error) {
 	for _, currentServer := range db.Servers {
 		// fmt.Printf("currentServer.Hash.String(): %s\nhash: %s\n", currentServer.Hash.String(), hash)
-		if currentServer.Hash.String() == hash {
+		if serverMatch(currentServer, hash) {
 			return &currentServer, nil
 		}
 	}
@@ -147,6 +161,22 @@ func (db *ServerDB) Close() error {
 }
 
 /* -- BEGIN HELPER METHODS -- */
+
+// serverMatch determines if a form of server identification
+// (hash or server ID) matches a server.
+func serverMatch(server Server, identification string) bool {
+	// Is the identification the server hash?
+	if server.Hash.String() == identification {
+		return true
+	}
+
+	// Is it the server ID?
+	if server.ID == identification {
+		return true
+	}
+
+	return false
+}
 
 // Bytes returns the raw bytes of the marshalled server database.
 func (db *ServerDB) Bytes() []byte {

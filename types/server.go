@@ -60,7 +60,7 @@ func NewServer(version, name string, port, ram int) (*Server, error) {
 
 	// Compute the hash and ID of the server
 	newServer.Hash = common.Sha3(newServer.Bytes())
-	newServer.ID = newServer.Hash.String()[0:8]
+	newServer.ID = newServer.Hash.String()[0:common.ServerIDSize]
 
 	return newServer, nil
 }

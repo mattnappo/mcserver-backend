@@ -41,12 +41,6 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 
-	// Initialize the server
-	err = commands.InitializeServer(server)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
 	// Add the newly-created server to the database
 	serverDB, err := types.LoadDB()
 	if err != nil {
@@ -58,6 +52,12 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 	serverDB.Close()
+
+	// Initialize the server
+	err = commands.InitializeServer(server)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	fmt.Printf("-- GENERATED NEW SERVER --\n[hash] %s\n\n", server.Hash.String()) // Log
 
