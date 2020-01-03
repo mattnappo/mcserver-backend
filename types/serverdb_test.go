@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -106,4 +107,58 @@ func TestUpdateSever(t *testing.T) {
 	t.Log(newServer.String())
 
 	db.Close()
+}
+
+func TestDeleteServer(t *testing.T) {
+	testServer, err := NewServer("1.12", "test", 9999, 1024)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	hexHash := fmt.Sprintf("%x", testServer.Hash)
+	t.Log(testServer.String())
+	t.Log(hexHash)
+
+	/* -----------call one---------------- */
+	db, err := LoadDB()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = db.AddServer(testServer)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	db.Close()
+	/* ------------------------------ */
+
+	/* -----------call two---------------- */
+	db, err = LoadDB()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	deletedServer, err := db.DeleteServer(hexHash)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	db.Close()
+	t.Log(deletedServer.String())
+	/* ------------------------------ */
+
+	/* -----------call three---------------- */
+	db, err = LoadDB()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i, server := range db.Servers {
+		t.Logf("SERVER %d:\n%s\n\n", i, server.String())
+	}
+
+	db.Close()
+	/* ------------------------------ */
+
 }
