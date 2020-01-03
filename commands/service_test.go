@@ -9,8 +9,8 @@ import (
 func TestGenerateService(t *testing.T) {
 	version := "1.12"
 	name := "test-server"
-	var port int = 25565
-	var ram int = 1024
+	port := 25565
+	ram := 1024
 
 	server, err := types.NewServer(version, name, port, ram)
 	if err != nil {
@@ -33,7 +33,7 @@ func TestInstallService(t *testing.T) {
 
 	service, err := GenerateService(*server)
 
-	err = InstallService(service, server.Name)
+	_, err = InstallService(service, server.Name)
 	if err != nil {
 		t.Fatal(err)
 	}

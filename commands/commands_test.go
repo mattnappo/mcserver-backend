@@ -111,3 +111,29 @@ func TestExecuteRestart(t *testing.T) {
 	}
 	t.Log(output)
 }
+
+func TestPurge(t *testing.T) {
+	version := "1.12"
+	name := "test server to purge"
+	port := 25565
+	ram := 1024
+
+	server, err := types.NewServer(version, name, port, ram)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = InitializeServer(server)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	time.Sleep(5 * time.Second)
+
+	err = Purge(server)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(server.String())
+}

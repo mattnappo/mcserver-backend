@@ -41,7 +41,7 @@ WantedBy=multi-user.target`
 }
 
 // InstallService installs a service to the system.
-func InstallService(service, name string) error {
+func InstallService(service, name string) (string, error) {
 	serviceName := name + ".service" // For convenience
 	// Init the path to the system services (Linux only)
 	path := filepath.Join("/etc/systemd/system/", serviceName)
@@ -49,13 +49,13 @@ func InstallService(service, name string) error {
 	// Write the service to the file
 	err := ioutil.WriteFile(path, []byte(service), 0644)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// Execute the necessary commands to register the daemon
 	exec.Command("/bin/sh", "sudo systemctl daemon-reload")
 
-	return nil
+	return path, nil
 }
 
 // UninstallService uninstalls a service from the system.

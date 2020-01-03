@@ -1,6 +1,8 @@
 package types
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNewServer(t *testing.T) {
 	version := "1.12"
@@ -12,5 +14,5 @@ func TestNewServer(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log((*server).String())
+	t.Log(server.String())
 }

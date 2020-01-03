@@ -11,16 +11,17 @@ import (
 
 // Server holds the metadata for a local Minecraft server.
 type Server struct {
-	Version     string      `json:"version"`     // The server version
-	Path        string      `json:"path"`        // The local path to the server
-	Port        int         `json:"port"`        // The port that the server runs on
-	RAM         int         `json:"ram"`         // The amount of ram to be allocated to the server
-	Name        string      `json:"name"`        // The name of the server
-	TimeCreated string      `json:"timeCreated"` // The time that the server was created
-	Initialized bool        `json:"initialized"` // Whether the server has been initialized or not
-	StartScript string      `json:"startScript"` // The path to the start.sh script
-	Properties  *Properties `json:"properties"`  // The contents of the server.properties file
-	Hash        common.Hash `json:"hash"`        // The hash of the server
+	Version     string      `json:"version"`      // The server version
+	Path        string      `json:"path"`         // The local path to the server
+	Port        int         `json:"port"`         // The port that the server runs on
+	RAM         int         `json:"ram"`          // The amount of ram to be allocated to the server
+	Name        string      `json:"name"`         // The name of the server
+	TimeCreated string      `json:"time_created"` // The time that the server was created
+	ServicePath string      `json:"service_path"` // The path to the service file
+	Initialized bool        `json:"initialized"`  // Whether the server has been initialized or not
+	StartScript string      `json:"startScript"`  // The path to the start.sh script
+	Properties  *Properties `json:"properties"`   // The contents of the server.properties file
+	Hash        common.Hash `json:"hash"`         // The hash of the server
 }
 
 // NewServer constructs a new server struct.

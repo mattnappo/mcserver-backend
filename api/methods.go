@@ -136,8 +136,8 @@ func ChangeProperty(w http.ResponseWriter, r *http.Request) {
 
 /* ----- START GET ROUTES ----- */
 
-// Execute can start, stop, and restart a server as well as get its status.
-func Execute(w http.ResponseWriter, r *http.Request) {
+// SystemCommand can start, stop, and restart a server as well as get its status.
+func SystemCommand(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json") // Set the proper header
 
 	// Determine which method to call
@@ -185,7 +185,54 @@ func Execute(w http.ResponseWriter, r *http.Request) {
 
 	// Write the response to the server
 	json.NewEncoder(w).Encode(res)
+}
 
+// DeleteServer will delete a server given its hash.
+func DeleteServer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json") // Set the proper header
+
+	// Determine which method to call
+	method := mux.Vars(r)["method"]
+	switch method {
+	case "start":
+		break
+	case "stop":
+		break
+	case "status":
+		break
+	case "restart":
+		break
+	default:
+		log.Fatal(errors.New("that is not a valid method"))
+	}
+
+	// Extract the server hash from the request
+	hashString := mux.Vars(r)["hash"]
+
+	// Open the DB
+	serverDB, err := types.LoadDB()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	// Delete the server (entry) from the database
+	server, err := serverDB.DeleteServer(hashString)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	serverDB.Close() // Close the DB
+
+	err = commands.Purge(server) // Purge the server files
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	// Prepare the response
+	res := NewGETResponse("success")
+
+	// Write the response to the server
+	json.NewEncoder(w).Encode(res)
 }
 
 /* ----- END GET ROUTES ----- */

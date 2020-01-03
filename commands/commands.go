@@ -3,7 +3,9 @@ package commands
 import (
 	"errors"
 	"io/ioutil"
+	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"strconv"
 
@@ -88,13 +90,13 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	// Install the generated service
-	err = InstallService(service, server.Name)
+	servicePath, err := InstallService(service, server.Name)
 	if err != nil {
 		return err
 	}
 
+	server.ServicePath = servicePath
 	server.Initialized = true // Set the server's initialized state to true
-	// server.Recalculate()      // Recalculate the hash of the server
 
 	return nil
 }
@@ -137,4 +139,34 @@ func Execute(command string, server types.Server) (string, error) {
 // SendCommand sends a command to the server console.
 func SendCommand(server *types.Server) {
 
+}
+
+// Purge will purge all server files from the system.
+func Purge(server *types.Server) error {
+	// Delete server files
+	dir, err := ioutil.ReadDir(server.Path)
+	if err != nil {
+		return err
+	}
+
+	for _, d := range dir {
+		err = os.RemoveAll(path.Join([]string{server.Path, d.Name()}...))
+		if err != nil {
+			return err
+		}
+	}
+
+	// Delete the now-empty directory
+	err = os.Remove(server.Path)
+	if err != nil {
+		return err
+	}
+
+	// Delete service file
+	err = os.Remove(server.ServicePath)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
