@@ -5,14 +5,15 @@ import (
 	"path"
 
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
+	"github.com/juju/loggo"
+	"github.com/juju/loggo/loggocolor"
 	"github.com/xoreo/mcserver-backend/common"
 )
 
 // API represents the necessary data for the api (a REST server).
 type API struct {
-	Router *mux.Router    `json:"router"` // The API's mux router
-	Log    *logrus.Logger `json:"logger"` // The API's logger
+	Router *mux.Router   `json:"router"` // The API's mux router
+	Log    *loggo.Logger `json:"logger"` // The API's logger
 
 	Root string `json:"root"` // The root route
 	Port int    `json:"port"` // The port to listen on
@@ -21,19 +22,21 @@ type API struct {
 // NewAPI constructs a new API struct.
 func NewAPI(port int) *API {
 	// Create and setup a new logger
-	logger := logrus.New()
-	logger.SetLevel(logrus.InfoLevel)
-	logger.SetOutput(os.Stdout)
+	logger := loggo.GetLogger("api")
+	logger.SetLogLevel(loggo.INFO)
+	loggo.ReplaceDefaultWriter(loggocolor.NewWriter(os.Stderr)) // Add colors
 
 	api := &API{
 		Router: mux.NewRouter(), // Create a new mux router
-		Log:    logger,          // The logger
+		Log:    &logger,         // The logger
 
 		Root: common.APIServerRoot, // The default root
 		Port: port,                 // The given port
 	}
 
 	api.SetupRoutes() // Setup the API's routes
+
+	api.Log.Logf(loggo.INFO, "API server initialization complete")
 	return api
 }
 
@@ -47,4 +50,6 @@ func (api *API) SetupRoutes() {
 	// Initialize the GET routes
 	api.Router.HandleFunc(path.Join(api.Root, "system/{method}/{hash}"), SystemCommand).Methods("GET")
 	api.Router.HandleFunc(path.Join(api.Root, "deleteServer/{hash}"), DeleteServer).Methods("GET")
+
+	api.Log.Logf(loggo.INFO, "initialized API server routes")
 }
