@@ -191,21 +191,6 @@ func SystemCommand(w http.ResponseWriter, r *http.Request) {
 func DeleteServer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json") // Set the proper header
 
-	// Determine which method to call
-	method := mux.Vars(r)["method"]
-	switch method {
-	case "start":
-		break
-	case "stop":
-		break
-	case "status":
-		break
-	case "restart":
-		break
-	default:
-		log.Fatal(errors.New("that is not a valid method"))
-	}
-
 	// Extract the server hash from the request
 	hashString := mux.Vars(r)["hash"]
 

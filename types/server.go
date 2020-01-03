@@ -11,17 +11,22 @@ import (
 
 // Server holds the metadata for a local Minecraft server.
 type Server struct {
-	Version     string      `json:"version"`      // The server version
-	Path        string      `json:"path"`         // The local path to the server
-	Port        int         `json:"port"`         // The port that the server runs on
-	RAM         int         `json:"ram"`          // The amount of ram to be allocated to the server
-	Name        string      `json:"name"`         // The name of the server
-	TimeCreated string      `json:"time_created"` // The time that the server was created
-	ServicePath string      `json:"service_path"` // The path to the service file
-	Initialized bool        `json:"initialized"`  // Whether the server has been initialized or not
-	StartScript string      `json:"startScript"`  // The path to the start.sh script
-	Properties  *Properties `json:"properties"`   // The contents of the server.properties file
-	Hash        common.Hash `json:"hash"`         // The hash of the server
+	Name    string `json:"name"`    // The name of the server
+	Version string `json:"version"` // The server version
+	Port    int    `json:"port"`    // The port that the server runs on
+	RAM     int    `json:"ram"`     // The amount of ram to be allocated to the server
+
+	TimeCreated string `json:"time_created"` // The time that the server was created
+	Initialized bool   `json:"initialized"`  // Whether the server has been initialized or not
+
+	Properties *Properties `json:"properties"` // The contents of the server.properties file
+
+	Path        string `json:"path"`         // The local path to the server
+	ServicePath string `json:"service_path"` // The path to the service file
+	StartScript string `json:"startScript"`  // The path to the start.sh script
+
+	Hash common.Hash `json:"hash"` // The hash of the server
+	ID   string      `json:"id"`   // The first 3 bytes of the hash (in hex) as a string
 }
 
 // NewServer constructs a new server struct.
@@ -39,20 +44,23 @@ func NewServer(version, name string, port, ram int) (*Server, error) {
 
 	// Create the new server
 	newServer := &Server{
-		Version:     version,
-		Path:        path,
-		Port:        int(port),
-		RAM:         int(ram),
-		Name:        name,
+		Name:    name,
+		Version: version,
+		Port:    int(port),
+		RAM:     int(ram),
+
 		TimeCreated: time.Now().String(),
 		Initialized: false,
 
+		Properties: DefaultProperties(int(port), oldName+" on "+strconv.Itoa(port)),
+
+		Path:        path,
 		StartScript: "",
-		Properties:  DefaultProperties(int(port), oldName+" on "+strconv.Itoa(port)),
 	}
 
-	// Compute the hash of the server
+	// Compute the hash and ID of the server
 	newServer.Hash = common.Sha3(newServer.Bytes())
+	newServer.ID = newServer.Hash.String()[0:8]
 
 	return newServer, nil
 }
