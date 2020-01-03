@@ -101,6 +101,16 @@ func ChangeProperty(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 
+	// Update the port field of the server itself, not just the property
+	if requestData.Property == "ServerPort" {
+		newPort, err := strconv.Atoi(requestData.NewValue)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+
+		server.Port = newPort
+	}
+
 	fmt.Println()
 
 	// Update the server in the database
