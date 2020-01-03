@@ -7,10 +7,10 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"strconv"
 
 	"github.com/xoreo/mcserver-backend/common"
 )
-
 
 var (
 	// ServerDBName is the name of the server database.
@@ -64,12 +64,12 @@ func (db *ServerDB) AddServer(server *Server) error {
 	for _, currentServer := range db.Servers {
 		// Check for unique name
 		if currentServer.Name == server.Name {
-			return errors.New("the name " + name + " is already in use")
+			return errors.New("the name " + server.Name + " is already in use")
 		}
 
 		// Check unique port
 		if currentServer.Port == server.Port {
-			return errors.New("the port " + strconv.Atoi(port) + " is already in use")
+			return errors.New("the port " + strconv.Itoa(server.Port) + " is already in use")
 		}
 	}
 
@@ -83,18 +83,20 @@ func (db *ServerDB) UpdateServer(oldServer, newServer *Server, hash string) erro
 	// Check that the server exists
 	exists := false
 	for _, currentServer := range db.Servers {
-		// If hash is used instead of 
+		// If hash is used instead of
 		if hash != "" { // Then oldServer should also be nil. But if it isn't, hash is preferred
 			if serverMatch(currentServer, hash) {
 				exists = true
 				break
 			}
-		} else {
+		} else if hash == "" {
 			// If oldServer is used instead of the old server hash
 			if currentServer.Hash.String() == oldServer.Hash.String() {
 				exists = true
 				break
 			}
+		} else {
+			return errors.New("bad arguments to UpdateServer call")
 		}
 	}
 
@@ -126,7 +128,7 @@ func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
 
 	for _, currentServer := range db.Servers {
 		fmt.Printf("currentServerHash: %s\n            hash: %s\n",
-		currentServer.Hash.String(), hash)
+			currentServer.Hash.String(), hash)
 
 		if !serverMatch(currentServer, hash) {
 			newServers = append(newServers, currentServer)

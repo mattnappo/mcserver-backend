@@ -127,7 +127,7 @@ func ChangeProperty(w http.ResponseWriter, r *http.Request) {
 	fmt.Println()
 
 	// Update the server in the database
-	err = serverDB.UpdateServer(oldServer, server)
+	err = serverDB.UpdateServer(oldServer, server, "")
 	if err != nil {
 		log.Fatal(err.Error())
 	}

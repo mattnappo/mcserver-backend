@@ -106,7 +106,7 @@ func TestUpdateSever(t *testing.T) {
 	newServer := testServer
 	newServer.Name = "new-name"
 
-	err = db.UpdateServer(testServer, newServer)
+	err = db.UpdateServer(testServer, newServer, "")
 	if err != nil {
 		t.Fatal(err)
 	}
