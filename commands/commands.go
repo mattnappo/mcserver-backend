@@ -143,6 +143,12 @@ func SendCommand(server *types.Server) {
 
 // Purge will purge all server files from the system.
 func Purge(server *types.Server) error {
+	// Stop the server before removing its files
+	_, err := Execute("stop", *server)
+	if err != nil {
+		return err
+	}
+
 	// Delete server files
 	dir, err := ioutil.ReadDir(server.Path)
 	if err != nil {

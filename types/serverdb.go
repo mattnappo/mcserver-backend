@@ -3,7 +3,6 @@ package types
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -127,13 +126,13 @@ func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
 
 	found := false // Was a server with the given hash found?
 
+	// For each server in the database
 	for _, currentServer := range db.Servers {
-		fmt.Printf("currentServerHash: %s\n            hash: %s\n",
-			currentServer.Hash.String(), hash)
-
+		// If there is not a match, add the current server to a list of new servers
 		if !serverMatch(currentServer, hash) {
 			newServers = append(newServers, currentServer)
 		} else {
+			// If there is a match, make sure to not add that server
 			oldCopy = &currentServer
 			found = true
 		}
@@ -143,6 +142,7 @@ func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
 		return nil, errors.New("a server with the hash " + hash + " could not be found")
 	}
 
+	// Update the servers
 	db.Servers = newServers
 
 	return oldCopy, nil
