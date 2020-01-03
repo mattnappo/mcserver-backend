@@ -27,7 +27,7 @@ func LoadDB() (*ServerDB, error) {
 	}
 
 	// Create the file (if it does not already exist)
-	file, err := os.OpenFile(ServerDBName, os.O_RDONLY|os.O_CREATE, 0644)
+	file, err := os.OpenFile(ServerDBName, os.O_RDONLY|os.O_CREATE, 0664)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func (db *ServerDB) Close() error {
 	}
 
 	// Write to file
-	err = ioutil.WriteFile(ServerDBName, json, 0644)
+	err = ioutil.WriteFile(ServerDBName, json, 0664)
 	if err != nil {
 		return err
 	}

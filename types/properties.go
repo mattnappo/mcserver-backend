@@ -158,7 +158,7 @@ func (p *Properties) WriteToServer(server *Server) error {
 	}
 
 	// Write to file
-	err = ioutil.WriteFile(path, []byte(p.GetFile()), 0644)
+	err = ioutil.WriteFile(path, []byte(p.GetFile()), 0664)
 	if err != nil {
 		return err
 	}

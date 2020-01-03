@@ -47,7 +47,7 @@ func InstallService(service, name string) (string, error) {
 	path := filepath.Join("/etc/systemd/system/", serviceName)
 
 	// Write the service to the file
-	err := ioutil.WriteFile(path, []byte(service), 0644)
+	err := ioutil.WriteFile(path, []byte(service), 0664)
 	if err != nil {
 		return "", err
 	}

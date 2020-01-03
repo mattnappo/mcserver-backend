@@ -72,7 +72,7 @@ func InitializeServer(server *types.Server) error {
 	script := GenerateStartScript(dServer)
 
 	// Install the script
-	err = ioutil.WriteFile(startScriptPath, script, 0644)
+	err = ioutil.WriteFile(startScriptPath, script, 0664)
 	if err != nil {
 		return err
 	}
