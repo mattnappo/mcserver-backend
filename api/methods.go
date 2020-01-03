@@ -59,6 +59,19 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 
+	// Open the db one last time to update the changes that took place after
+	// initialization
+	serverDB, err = types.LoadDB()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	err = serverDB.UpdateServer(nil, server, server.Hash.String())
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	serverDB.Close()
+
 	fmt.Printf("-- GENERATED NEW SERVER --\n[hash] %s\n\n", server.Hash.String()) // Log
 
 	json.NewEncoder(w).Encode(*server) // Write to the server

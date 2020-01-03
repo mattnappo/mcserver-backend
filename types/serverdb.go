@@ -11,8 +11,11 @@ import (
 	"github.com/xoreo/mcserver-backend/common"
 )
 
-// ServerDBName is the name of the server database.
-var ServerDBName = path.Join(common.DataDir, "servers.json")
+
+var (
+	// ServerDBName is the name of the server database.
+	ServerDBName = path.Join(common.DataDir, "servers.json")
+)
 
 // ServerDB contains the metadata for all of the servers.
 type ServerDB struct {
@@ -61,12 +64,12 @@ func (db *ServerDB) AddServer(server *Server) error {
 	for _, currentServer := range db.Servers {
 		// Check for unique name
 		if currentServer.Name == server.Name {
-			return errors.New("that server name is already in use")
+			return errors.New("the name " + name + " is already in use")
 		}
 
 		// Check unique port
 		if currentServer.Port == server.Port {
-			return errors.New("a server with that port already exists")
+			return errors.New("the port " + strconv.Atoi(port) + " is already in use")
 		}
 	}
 
@@ -74,20 +77,30 @@ func (db *ServerDB) AddServer(server *Server) error {
 	return nil
 }
 
-// UpdateServer updates a server in the database.
-func (db *ServerDB) UpdateServer(oldServer, newServer *Server) error {
+// UpdateServer updates a server in the database
+// via the old server itself, or the old server's hash (or ID, in theory).
+func (db *ServerDB) UpdateServer(oldServer, newServer *Server, hash string) error {
 	// Check that the server exists
 	exists := false
 	for _, currentServer := range db.Servers {
-		if currentServer.Hash.String() == oldServer.Hash.String() {
-			exists = true
-			break
+		// If hash is used instead of 
+		if hash != "" { // Then oldServer should also be nil. But if it isn't, hash is preferred
+			if serverMatch(currentServer, hash) {
+				exists = true
+				break
+			}
+		} else {
+			// If oldServer is used instead of the old server hash
+			if currentServer.Hash.String() == oldServer.Hash.String() {
+				exists = true
+				break
+			}
 		}
 	}
 
 	// If the server does not exist, throw an error
 	if !exists {
-		return errors.New("that server is not in the database")
+		return errors.New("server " + oldServer.Hash.String() + " is not in the database")
 	}
 
 	// Remove the old server
@@ -97,8 +110,6 @@ func (db *ServerDB) UpdateServer(oldServer, newServer *Server) error {
 			break
 		}
 	}
-
-	// newServer.Recalculate() // Recalculate the hash
 
 	// Add the new server
 	db.AddServer(newServer)
@@ -114,7 +125,9 @@ func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
 	found := false // Was a server with the given hash found?
 
 	for _, currentServer := range db.Servers {
-		fmt.Printf("currentServerHash: %s\n            hash: %s\n", currentServer.Hash.String(), hash)
+		fmt.Printf("currentServerHash: %s\n            hash: %s\n",
+		currentServer.Hash.String(), hash)
+
 		if !serverMatch(currentServer, hash) {
 			newServers = append(newServers, currentServer)
 		} else {
@@ -124,7 +137,7 @@ func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
 	}
 
 	if !found {
-		return nil, errors.New("a server with that hash does not exist")
+		return nil, errors.New("a server with the hash " + hash + " could not be found")
 	}
 
 	db.Servers = newServers
@@ -141,7 +154,7 @@ func (db *ServerDB) GetServerFromHash(hash string) (*Server, error) {
 		}
 	}
 
-	return nil, errors.New("a server with that hash does not exist")
+	return nil, errors.New("a server with the hash " + hash + " could not be found")
 }
 
 // Close closes and writes changes to the database file
