@@ -7,8 +7,8 @@ servers/
 types/servers.json
 servers.json
 vendor/
+*.swp
 data/
-
 
 # Binaries for programs and plugins
 *.exe
