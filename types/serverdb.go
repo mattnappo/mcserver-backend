@@ -8,7 +8,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/SummerCash/ursa/common"
+	"github.com/xoreo/mcserver-backend/common"
 )
 
 // ServerDBName is the name of the server database.
@@ -21,7 +21,7 @@ type ServerDB struct {
 
 // LoadDB returns the contents of a ServerDB file.
 func LoadDB() (*ServerDB, error) {
-	err := common.CreateDirIfDoesNotExit(common.DataDir)
+	err := common.CreateDirIfDoesNotExist(common.DataDir)
 	if err != nil {
 		return nil, err
 	}

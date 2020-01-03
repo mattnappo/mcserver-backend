@@ -37,7 +37,7 @@ func CreateDirIfDoesNotExist(dir string) error {
 // NewServerPath returns the path to a server given its name.
 func NewServerPath(name string) (string, error) {
 	// Create a path
-	rawPath := ServersRoot + name
+	rawPath := path.Join(ServersRoot, name)
 	abs, err := filepath.Abs(rawPath)
 	if err != nil {
 		return "", err
