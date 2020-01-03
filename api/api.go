@@ -28,5 +28,5 @@ func (api *API) SetupRoutes() {
 
 	// Initialize the GET routes
 	api.Router.HandleFunc("/api/system/{method}/{hash}", SystemCommand).Methods("GET")
-	api.Router.HandleFunc("/api/delete/{hash}", DeleteServer).Methods("GET")
+	api.Router.HandleFunc("/api/deleteServer/{hash}", DeleteServer).Methods("GET")
 }
