@@ -5,6 +5,7 @@ important:
 errors written back to the client
 
 less important:
+Move systemd *.service files into an mc-servers/ folder in /etc/systemd/system
 Add logging
 no overlapping ports
 main.go
