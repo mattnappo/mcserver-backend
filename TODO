@@ -7,7 +7,6 @@ errors written back to the client
 less important:
 nice feature to read from file of all server tyoes and download locations
 change server seed each time?
-Add logging
 main.go
 readme
 cleanup prebuilt server, no MACOS stuff

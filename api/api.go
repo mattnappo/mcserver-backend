@@ -21,7 +21,7 @@ type API struct {
 func NewAPI(port int) *API {
 	api := &API{
 		Router: mux.NewRouter(),  // Create a new mux router
-		Log:    newLogger("api"), // The logger
+		Log:    common.NewLogger("api"), // The logger
 
 		Root: common.APIServerRoot, // The default root
 		Port: port,                 // The given port
