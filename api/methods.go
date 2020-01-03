@@ -223,7 +223,7 @@ func DeleteServer(w http.ResponseWriter, r *http.Request) {
 
 	serverDB.Close() // Close the DB
 
-	err = server.Purge() // Purge the server files
+	err = commands.Purge(server) // Purge the server files
 	if err != nil {
 		log.Fatal(err.Error())
 	}

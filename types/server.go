@@ -2,9 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"io/ioutil"
-	"os"
-	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -58,36 +55,6 @@ func NewServer(version, name string, port, ram int) (*Server, error) {
 	newServer.Hash = common.Sha3(newServer.Bytes())
 
 	return newServer, nil
-}
-
-// Purge will purge all server files from the system.
-func (server *Server) Purge() error {
-	// Delete server files
-	dir, err := ioutil.ReadDir(server.Path)
-	if err != nil {
-		return err
-	}
-
-	for _, d := range dir {
-		err = os.RemoveAll(path.Join([]string{server.Path, d.Name()}...))
-		if err != nil {
-			return err
-		}
-	}
-
-	// Delete the now-empty directory
-	err = os.Remove(server.Path)
-	if err != nil {
-		return err
-	}
-
-	// Delete service file
-	err = os.Remove(server.ServicePath)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 /* -- BEGIN HELPER METHODS -- */
