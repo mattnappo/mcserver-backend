@@ -86,6 +86,7 @@ func (db *ServerDB) UpdateServer(oldServer, newServer *Server, hash string) erro
 		// If hash is used instead of
 		if hash != "" { // Then oldServer should also be nil. But if it isn't, hash is preferred
 			if serverMatch(currentServer, hash) {
+				oldServer = &currentServer
 				exists = true
 				break
 			}
