@@ -1,7 +1,6 @@
 package types
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -115,9 +114,8 @@ func TestDeleteServer(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	hexHash := fmt.Sprintf("%x", testServer.Hash)
 	t.Log(testServer.String())
-	t.Log(hexHash)
+	t.Log(testServer.Hash.String())
 
 	/* -----------call one---------------- */
 	db, err := LoadDB()
@@ -139,7 +137,7 @@ func TestDeleteServer(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	deletedServer, err := db.DeleteServer(hexHash)
+	deletedServer, err := db.DeleteServer(testServer.Hash.String())
 	if err != nil {
 		t.Fatal(err)
 	}
