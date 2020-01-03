@@ -7,6 +7,7 @@ import (
 	"os/user"
 	"path/filepath"
 
+	"github.com/xoreo/mcserver-backend/common"
 	"github.com/xoreo/mcserver-backend/types"
 )
 
@@ -43,24 +44,34 @@ WantedBy=multi-user.target`
 // InstallService installs a service to the system.
 func InstallService(service, name string) (string, error) {
 	serviceName := name + ".service" // For convenience
-	// Init the path to the system services (Linux only)
-	path := filepath.Join("/etc/systemd/system/", serviceName)
+	root := "/etc/systemd/system/mcservers"
+
+	// Init the path to the system services
+	path := filepath.Join(root, serviceName)
+
+	// Make sure the root dir exists
+	err := common.CreateDirIfDoesNotExist(root)
+	if err != nil {
+		return "", err
+	}
 
 	// Write the service to the file
-	err := ioutil.WriteFile(path, []byte(service), 0664)
+	err = ioutil.WriteFile(path, []byte(service), 0664)
 	if err != nil {
 		return "", err
 	}
 
 	// Execute the necessary commands to register the daemon
 	exec.Command("/bin/sh", "sudo systemctl daemon-reload")
+	exec.Command("/bin/sh", "sudo systemctl enable ", path)
 
 	return path, nil
 }
 
 // UninstallService uninstalls a service from the system.
 func UninstallService(serviceName string) (string, error) {
-	command := exec.Command("/bin/sh", "sudo rm /etc/systemd/system/"+serviceName+".service") // Delete the service
+	command := exec.Command("/bin/sh",
+		"sudo rm /etc/systemd/system/"+serviceName+".service") // Delete the service
 
 	output, err := command.Output() // Get the output
 	if err != nil {
