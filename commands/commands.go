@@ -75,6 +75,12 @@ func InitializeServer(server *types.Server) error {
 		return err
 	}
 
+	// Write the server properties file to the correct location
+	err = server.Properties.WriteToServer(server)
+	if err != nil {
+		return err
+	}
+
 	// Generate a service
 	service, err := GenerateService(*server)
 	if err != nil {

@@ -45,6 +45,7 @@ func NewServer(version, name string, port, ram int) (*Server, error) {
 		Name:        name,
 		TimeCreated: time.Now().String(),
 		Initialized: false,
+
 		StartScript: "",
 		Properties:  DefaultProperties(int(port), oldName+" on "+strconv.Itoa(port)),
 	}
