@@ -27,5 +27,6 @@ func (api *API) SetupRoutes() {
 	api.Router.HandleFunc("/api/changeProperty/", ChangeProperty).Methods("POST")
 
 	// Initialize the GET routes
-	api.Router.HandleFunc("/api/execute/{method}/{hash}", Execute).Methods("GET")
+	api.Router.HandleFunc("/api/system/{method}/{hash}", SystemCommand).Methods("GET")
+	api.Router.HandleFunc("/api/delete/{hash}", DeleteServer).Methods("GET")
 }

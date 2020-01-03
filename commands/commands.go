@@ -94,7 +94,6 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	server.Initialized = true // Set the server's initialized state to true
-	// server.Recalculate()      // Recalculate the hash of the server
 
 	return nil
 }

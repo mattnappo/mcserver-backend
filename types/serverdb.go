@@ -83,12 +83,37 @@ func (db *ServerDB) UpdateServer(oldServer, newServer *Server) error {
 		}
 	}
 
-	newServer.Recalculate() // Recalculate the hash
+	// newServer.Recalculate() // Recalculate the hash
 
 	// Add the new server
 	db.AddServer(newServer)
 
 	return nil
+}
+
+// DeleteServer will delete a server entry from the given DB.
+func (db *ServerDB) DeleteServer(hash string) (*Server, error) {
+	var oldCopy *Server     // A copy of the old server for returning later
+	var newServers []Server // The array of new servers
+
+	found := false // Was a server with the given hash found?
+
+	for _, currentServer := range db.Servers {
+		if currentServer.Hash.String() != hash {
+			newServers = append(newServers, currentServer)
+		} else {
+			oldCopy = &currentServer
+			found = true
+		}
+	}
+
+	if !found {
+		return nil, errors.New("a server with that hash does not exist")
+	}
+
+	db.Servers = newServers
+
+	return oldCopy, nil
 }
 
 // GetServerFromHash returns the server belonging to the hash given.
