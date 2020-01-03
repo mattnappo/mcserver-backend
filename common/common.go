@@ -19,7 +19,7 @@ var (
 	ServersRoot = path.Join(DataDir, "servers")
 
 	// APIServerRoot is the default root route for the API server.
-	APIServerRoot = "api"
+	APIServerRoot = "/api"
 )
 
 // ServerIDSize is the length of server IDs.
