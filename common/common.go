@@ -6,14 +6,21 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 )
 
-const (
+var (
+	// DataDir is the root directory for all server data.
+	DataDir = "data"
+
 	// ServersRoot is the root directory where all of the servers are stored.
-	ServersRoot = "servers/"
+	ServersRoot = path.Join(DataDir, "servers")
 )
+
+// ServerIDSize is the length of server IDs.
+const ServerIDSize = 8
 
 // CreateDirIfDoesNotExist creates a directory if it does not already exist.
 func CreateDirIfDoesNotExist(dir string) error {

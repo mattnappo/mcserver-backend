@@ -1,5 +1,9 @@
+github.com/SummerCash/ursa v0.0.0-20190308180320-f0a1fc97afcf h1:bj9I0RCoGn83J6E7JMyb2jiWuI8QBMVoz6Ay3qA6FXE=
+github.com/SummerCash/ursa v0.0.0-20190308180320-f0a1fc97afcf/go.mod h1:7jXdThbjRoksI1dmAO3ZiEMUFqmRmCp4y03BiMA1yLM=
+github.com/SummerCash/wagon v0.4.0/go.mod h1:ihol5QgwyT437ztdqh2Jk87maN4oHZFY/wcZ73LlSQU=
 github.com/gorilla/mux v1.7.2 h1:zoNxOV7WjqXptQOVngLmcSQgXmgk4NMz1HibBchjl/I=
 github.com/gorilla/mux v1.7.2/go.mod h1:1lud6UwP+6orDFRuTfBEV8e9/aOM/c4fVVCaMa2zaAs=
+golang.org/x/crypto v0.0.0-20190228161510-8dd112bcdc25/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f h1:R423Cnkcp5JABoeemiGEPlt9tHXFfw5kvc0yqlxRPWo=
 golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=
