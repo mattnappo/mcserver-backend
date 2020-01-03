@@ -1,8 +1,25 @@
 package types
 
 import (
+	"math/rand"
+	"strconv"
 	"testing"
+	"time"
 )
+
+func getTestServer() (*Server, error) {
+	rand.Seed(time.Now().UnixNano())
+	min := 25565
+	max := 26000
+	random := rand.Intn(max-min) + min
+
+	server, err := NewServer("1.7.2", "server-"+strconv.Itoa(random), random, 1024)
+	if err != nil {
+		return nil, err
+	}
+
+	return server, nil
+}
 
 func TestLoadDB(t *testing.T) {
 	db, err := LoadDB()
@@ -13,12 +30,7 @@ func TestLoadDB(t *testing.T) {
 }
 
 func TestAddServer(t *testing.T) {
-	version := "1.12"
-	name := "test server"
-	port := 25565
-	ram := 1024
-
-	server, err := NewServer(version, name, port, ram)
+	testServer, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,7 +42,7 @@ func TestAddServer(t *testing.T) {
 
 	t.Logf("[ before AddServer ] %s\n", db.String())
 
-	err = db.AddServer(server)
+	err = db.AddServer(testServer)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -44,11 +56,7 @@ func TestAddServer(t *testing.T) {
 }
 
 func TestClose(t *testing.T) {
-	version := "1.12"
-	name := "test server"
-	port := 25565
-	ram := 1024
-	server, err := NewServer(version, name, port, ram)
+	testServer, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,7 +68,7 @@ func TestClose(t *testing.T) {
 
 	t.Logf("[ before AddServer ] %s\n", db.String())
 
-	db.AddServer(server)
+	db.AddServer(testServer)
 
 	t.Logf("[ after AddServer ] %s\n", db.String())
 
@@ -71,7 +79,7 @@ func TestClose(t *testing.T) {
 }
 
 func TestUpdateSever(t *testing.T) {
-	testServer, err := NewServer("1.12", "test", 9999, 1024)
+	testServer, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +117,7 @@ func TestUpdateSever(t *testing.T) {
 }
 
 func TestDeleteServer(t *testing.T) {
-	testServer, err := NewServer("1.12", "test", 9999, 1024)
+	testServer, err := getTestServer()
 	if err != nil {
 		t.Fatal(err)
 	}
