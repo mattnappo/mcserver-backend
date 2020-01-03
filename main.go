@@ -1,6 +1,8 @@
 package main
 
-import "github.com/xoreo/mcserver-backend/api"
+import (
+	"github.com/xoreo/mcserver-backend/api"
+)
 
 func main() {
 	api.StartAPIServer(8000)

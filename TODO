@@ -4,13 +4,10 @@ TODO
 important:
 errors written back to the client
 
-
 less important:
 nice feature to read from file of all server tyoes and download locations
 change server seed each time?
-Move systemd *.service files into an mc-servers/ folder in /etc/systemd/system
 Add logging
-no overlapping ports
 main.go
 readme
 cleanup prebuilt server, no MACOS stuff
