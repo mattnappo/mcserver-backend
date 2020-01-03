@@ -88,11 +88,12 @@ func InitializeServer(server *types.Server) error {
 	}
 
 	// Install the generated service
-	err = InstallService(service, server.Name)
+	servicePath, err := InstallService(service, server.Name)
 	if err != nil {
 		return err
 	}
 
+	server.ServicePath = servicePath
 	server.Initialized = true // Set the server's initialized state to true
 
 	return nil

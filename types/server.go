@@ -2,6 +2,9 @@ package types
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"os"
+	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -11,16 +14,17 @@ import (
 
 // Server holds the metadata for a local Minecraft server.
 type Server struct {
-	Version     string      `json:"version"`     // The server version
-	Path        string      `json:"path"`        // The local path to the server
-	Port        int         `json:"port"`        // The port that the server runs on
-	RAM         int         `json:"ram"`         // The amount of ram to be allocated to the server
-	Name        string      `json:"name"`        // The name of the server
-	TimeCreated string      `json:"timeCreated"` // The time that the server was created
-	Initialized bool        `json:"initialized"` // Whether the server has been initialized or not
-	StartScript string      `json:"startScript"` // The path to the start.sh script
-	Properties  *Properties `json:"properties"`  // The contents of the server.properties file
-	Hash        common.Hash `json:"hash"`        // The hash of the server
+	Version     string      `json:"version"`      // The server version
+	Path        string      `json:"path"`         // The local path to the server
+	Port        int         `json:"port"`         // The port that the server runs on
+	RAM         int         `json:"ram"`          // The amount of ram to be allocated to the server
+	Name        string      `json:"name"`         // The name of the server
+	TimeCreated string      `json:"time_created"` // The time that the server was created
+	ServicePath string      `json:"service_path"` // The path to the service file
+	Initialized bool        `json:"initialized"`  // Whether the server has been initialized or not
+	StartScript string      `json:"startScript"`  // The path to the start.sh script
+	Properties  *Properties `json:"properties"`   // The contents of the server.properties file
+	Hash        common.Hash `json:"hash"`         // The hash of the server
 }
 
 // NewServer constructs a new server struct.
@@ -54,6 +58,36 @@ func NewServer(version, name string, port, ram int) (*Server, error) {
 	newServer.Hash = common.Sha3(newServer.Bytes())
 
 	return newServer, nil
+}
+
+// Purge will purge all server files from the system.
+func (server *Server) Purge() error {
+	// Delete server files
+	dir, err := ioutil.ReadDir(server.Path)
+	if err != nil {
+		return err
+	}
+
+	for _, d := range dir {
+		err = os.RemoveAll(path.Join([]string{server.Path, d.Name()}...))
+		if err != nil {
+			return err
+		}
+	}
+
+	// Delete the now-empty directory
+	err = os.Remove(server.Path)
+	if err != nil {
+		return err
+	}
+
+	// Delete service file
+	err = os.Remove(server.ServicePath)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /* -- BEGIN HELPER METHODS -- */
