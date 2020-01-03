@@ -18,6 +18,7 @@ import (
 
 // CreateServer is the api function to create a new server.
 func CreateServer(w http.ResponseWriter, r *http.Request) {
+	logger := newLogger("api.CreateServer")
 	w.Header().Set("Content-Type", "application/json") // Set the proper header
 
 	// Decode the post request
@@ -35,11 +36,15 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 
+	logger.Infof("createServer request decoded")
+
 	// Create the new server
 	server, err := types.NewServer(requestData.Version, requestData.Name, port, ram)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	logger.Infof("created new server %s", server.Hash.String())
 
 	// Add the newly-created server to the database
 	serverDB, err := types.LoadDB()
@@ -53,11 +58,15 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 	}
 	serverDB.Close()
 
+	logger.Infof("added new server to the database")
+
 	// Initialize the server
 	err = commands.InitializeServer(server)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	logger.Infof("server initialization complete")
 
 	// Open the db one last time to update the changes that took place after
 	// initialization
@@ -72,7 +81,8 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 	}
 	serverDB.Close()
 
-	fmt.Printf("-- GENERATED NEW SERVER --\n[hash] %s\n\n", server.Hash.String()) // Log
+	logger.Infof("updated new server in database")
+	logger.Infof("server creation complete")
 
 	json.NewEncoder(w).Encode(*server) // Write to the server
 }
@@ -84,6 +94,7 @@ func SendCommand(w http.ResponseWriter, r *http.Request) {
 
 // ChangeProperty is the api function that changes a property in a server
 func ChangeProperty(w http.ResponseWriter, r *http.Request) {
+	// logger := newLogger("api.ChangeProperty")
 	w.Header().Set("Content-Type", "application/json") // Set the proper header
 
 	// Decode the post request
