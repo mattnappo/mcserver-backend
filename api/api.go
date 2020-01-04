@@ -20,7 +20,7 @@ type API struct {
 // NewAPI constructs a new API struct.
 func NewAPI(port int) *API {
 	api := &API{
-		Router: mux.NewRouter(),  // Create a new mux router
+		Router: mux.NewRouter(),         // Create a new mux router
 		Log:    common.NewLogger("api"), // The logger
 
 		Root: common.APIServerRoot, // The default root
@@ -41,6 +41,8 @@ func (api *API) SetupRoutes() {
 	api.Router.HandleFunc(path.Join(api.Root, "changeProperty"), ChangeProperty).Methods("POST")
 
 	// Initialize the GET routes
+	api.Router.HandleFunc(path.Join(api.Root, "getServer/{hash}"), GetServer).Methods("GET")
+	api.Router.HandleFunc(path.Join(api.Root, "getAllServers"), GetAllServers).Methods("GET")
 	api.Router.HandleFunc(path.Join(api.Root, "system/{method}/{hash}"), SystemCommand).Methods("GET")
 	api.Router.HandleFunc(path.Join(api.Root, "deleteServer/{hash}"), DeleteServer).Methods("GET")
 
