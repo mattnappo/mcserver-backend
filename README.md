@@ -1,4 +1,7 @@
 # mcserver-backend
+[![GoDoc](https://godoc.org/github.com/xoreo/mcserver-backend?status.svg)](https://godoc.org/github.com/xoreo/mcserver-backend)
+[![GoReportCard](https://goreportcard.com/badge/github.com/xoreo/mcserver-backend)](https://goreportcard.com/report/github.com/xoreo/mcserver-backend)
+
 The backend for a Minecraft Server hosting platform.
 
 ## Usage
