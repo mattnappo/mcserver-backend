@@ -38,6 +38,20 @@ Request:
 }
 ```
 
+**getServer** - get a server given a hash or server id
+
+| Attribute | Value  |
+| --------- | ------ |
+| Method    | `GET`  |
+| Endpoint  | `/api/getServer/{hash}` |
+
+**getAllServers** - get all servers in the database
+
+| Attribute | Value  |
+| --------- | ------ |
+| Method    | `GET`  |
+| Endpoint  | `/api/getAllServers` |
+
 **system** - execute a systemctl command (either `start`, `stop`, or `status`)
 
 | Attribute | Value  |
