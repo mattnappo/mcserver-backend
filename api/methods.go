@@ -46,6 +46,14 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 
 	logger.Debugf("created new server entry %s", server.Hash.String())
 
+	// Initialize the server
+	err = commands.InitializeServer(server)
+	if err != nil {
+		logger.Criticalf(err.Error())
+	}
+
+	logger.Debugf("server initialization complete")
+
 	// Add the newly-created server to the database
 	serverDB, err := types.LoadDB()
 	if err != nil {
@@ -59,29 +67,6 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
 	serverDB.Close()
 
 	logger.Debugf("added new server to the database")
-
-	// Initialize the server
-	err = commands.InitializeServer(server)
-	if err != nil {
-		logger.Criticalf(err.Error())
-	}
-
-	logger.Debugf("server initialization complete")
-
-	// Open the db one last time to update the changes that took place after
-	// initialization
-	serverDB, err = types.LoadDB()
-	if err != nil {
-		logger.Criticalf(err.Error())
-	}
-
-	err = serverDB.UpdateServer(nil, server, server.Hash.String())
-	if err != nil {
-		logger.Criticalf(err.Error())
-	}
-	serverDB.Close()
-
-	logger.Debugf("updated new server in database")
 	logger.Infof("created new server %s", server.Hash.String())
 
 	json.NewEncoder(w).Encode(*server) // Write to the server
