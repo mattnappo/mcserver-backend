@@ -1,3 +1,5 @@
+// Package common implements methods and variables that do not fit into any other
+// package and are mostly independent of this repository.
 package common
 
 import (

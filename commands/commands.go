@@ -1,3 +1,5 @@
+// Package commands implements various actions that can
+// take place on or a by a types.Server.
 package commands
 
 import (

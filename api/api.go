@@ -1,3 +1,4 @@
+// Package api implements an http api server for the entire backend (this entire repo).
 package api
 
 import (
