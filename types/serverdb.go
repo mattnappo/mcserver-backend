@@ -160,6 +160,15 @@ func (db *ServerDB) GetServerFromHash(hash string) (*Server, error) {
 	return nil, errors.New("a server with the hash " + hash + " could not be found")
 }
 
+// GetAllServers returns all servers in the database.
+func (db *ServerDB) GetAllServers() ([]Server, error) {
+	if db.Servers != nil {
+		return db.Servers, nil
+	}
+
+	return []Server{}, errors.New("no servers in database; it is empty")
+}
+
 // Close closes and writes changes to the database file
 func (db *ServerDB) Close() error {
 	// Marshall

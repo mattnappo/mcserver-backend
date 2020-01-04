@@ -210,6 +210,69 @@ func SystemCommand(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
+// GetServer returns a server given a hash.
+func GetServer(w http.ResponseWriter, r *http.Request) {
+	logger := common.NewLogger("api.GetServer")
+	w.Header().Set("Content-Type", "application/json") // Set the proper header
+
+	// Extract the server hash from the request
+	hashString := mux.Vars(r)["hash"]
+
+	logger.Infof("request to get %s", hashString)
+
+	// Open the DB
+	serverDB, err := types.LoadDB()
+	if err != nil {
+		logger.Criticalf(err.Error())
+	}
+
+	// Get the server from the DB
+	server, err := serverDB.GetServerFromHash(hashString)
+	if err != nil {
+		logger.Criticalf(err.Error())
+	}
+
+	serverDB.Close() // Close the DB
+
+	logger.Debugf("got server %s from database", server.Hash.String())
+
+	// Prepare the response
+	res := GETServerResponse{*server}
+
+	// Write the response to the server
+	json.NewEncoder(w).Encode(res)
+}
+
+// GetAllServers returns all servers in the database.
+func GetAllServers(w http.ResponseWriter, r *http.Request) {
+	logger := common.NewLogger("api.GetAllServers")
+	w.Header().Set("Content-Type", "application/json") // Set the proper header
+
+	logger.Infof("request to get all servers")
+
+	// Open the DB
+	serverDB, err := types.LoadDB()
+	if err != nil {
+		logger.Criticalf(err.Error())
+	}
+
+	// Get the server from the DB
+	servers, err := serverDB.GetAllServers()
+	if err != nil {
+		logger.Criticalf(err.Error())
+	}
+
+	serverDB.Close() // Close the DB
+
+	logger.Debugf("got all servers from database")
+
+	// Prepare the response
+	res := GETServersResponse{servers}
+
+	// Write the response to the server
+	json.NewEncoder(w).Encode(res)
+}
+
 // DeleteServer will delete a server given its hash.
 func DeleteServer(w http.ResponseWriter, r *http.Request) {
 	logger := common.NewLogger("api.DeleteServer")

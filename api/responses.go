@@ -1,8 +1,22 @@
 package api
 
-// GETResponse is the structure for the JSON responses for the GET requests.
+import "github.com/xoreo/mcserver-backend/types"
+
+// GETResponse is the structure for the JSON responses for GET request responses.
 type GETResponse struct {
 	Output string `json:"output"`
+}
+
+// GETServerResponse is the structure for the JSON responses for the
+// GET request responses containing a server.
+type GETServerResponse struct {
+	Server types.Server `json:"server"`
+}
+
+// GETServersResponse is the structure for the JSON responses for the
+// GET request responses containing multiple servers.
+type GETServersResponse struct {
+	Server []types.Server `json:"servers"`
 }
 
 // ErrorResponse is the structure for when an error is thrown on the server side.
