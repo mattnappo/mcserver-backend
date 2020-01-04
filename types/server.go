@@ -1,3 +1,4 @@
+// Package types implements the core types to this backend such a the server database.
 package types
 
 import (

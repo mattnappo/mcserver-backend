@@ -1,3 +1,5 @@
+// Package common implements methods and variables that do not fit into any other
+// package and are mostly independent of this repository.
 package common
 
 import (
@@ -17,6 +19,9 @@ var (
 
 	// ServersRoot is the root directory where all of the servers are stored.
 	ServersRoot = path.Join(DataDir, "servers")
+
+	// APIServerRoot is the default root route for the API server.
+	APIServerRoot = "/api"
 )
 
 // ServerIDSize is the length of server IDs.
