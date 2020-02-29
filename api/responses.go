@@ -10,7 +10,10 @@ type GETResponse struct {
 // GETServerResponse is the structure for the JSON responses for the
 // GET request responses containing a server.
 type GETServerResponse struct {
-	Server types.Server `json:"server"`
+	Timestamp string `json:"timestamp"`
+
+	Properties     types.Properties     `json:"properties"`
+	CoreProperties types.CoreProperties `json:"coreProperties"`
 }
 
 // GETServersResponse is the structure for the JSON responses for the

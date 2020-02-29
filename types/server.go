@@ -10,6 +10,14 @@ import (
 	"github.com/xoreo/mcserver-backend/common"
 )
 
+// CoreProperties represets the core properties of a server
+type CoreProperties struct {
+	Name    string `json:"name"`    // The name of the server
+	Version string `json:"version"` // The version of the server
+	Port    int    `json:"port"`    // The port of the server
+	RAM     int    `json:"ram"`     // The amount of ram of the server
+}
+
 // Server holds the metadata for a local Minecraft server.
 type Server struct {
 	Name    string `json:"name"`    // The name of the server
@@ -83,6 +91,17 @@ func (server *Server) String() string {
 // Recalculate recalculates the hash of the server.
 func (server *Server) Recalculate() {
 	server.Hash = common.Sha3(server.Bytes())
+}
+
+// GetCoreProperties returns a CoreProperties containing the core properties of the server.
+func (server *Server) GetCoreProperties() CoreProperties {
+	cp := CoreProperties{
+		Name:    server.Name,
+		Version: server.Version,
+		Port:    server.Port,
+		RAM:     server.RAM,
+	}
+	return cp
 }
 
 /* -- END HELPER METHODS -- */
