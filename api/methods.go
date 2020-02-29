@@ -237,7 +237,12 @@ func GetServer(w http.ResponseWriter, r *http.Request) {
 	logger.Debugf("got server %s from database", server.Hash.String())
 
 	// Prepare the response
-	res := GETServerResponse{server.TimeCreated, *server.Properties, server.GetCoreProperties()}
+	res := GETServerResponse{
+		server.TimeCreated,
+		server.ID,
+		*server.Properties,
+		server.GetCoreProperties(),
+	}
 
 	// Write the response to the server
 	json.NewEncoder(w).Encode(res)

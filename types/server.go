@@ -16,7 +16,6 @@ type CoreProperties struct {
 	Version string `json:"version"` // The version of the server
 	Port    int    `json:"port"`    // The port of the server
 	RAM     int    `json:"ram"`     // The amount of ram of the server
-	ID      string `json:"id"`      // The ID of the server
 }
 
 // Server holds the metadata for a local Minecraft server.
@@ -101,7 +100,6 @@ func (server *Server) GetCoreProperties() CoreProperties {
 		Version: server.Version,
 		Port:    server.Port,
 		RAM:     server.RAM,
-		ID:      server.ID,
 	}
 	return cp
 }

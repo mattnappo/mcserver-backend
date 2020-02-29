@@ -12,6 +12,8 @@ type GETResponse struct {
 type GETServerResponse struct {
 	Timestamp string `json:"timestamp"`
 
+	ID string `json:"id"`
+
 	Properties     types.Properties     `json:"properties"`
 	CoreProperties types.CoreProperties `json:"coreProperties"`
 }
